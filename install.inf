@@ -1,0 +1,13 @@
+[info]
+title=CudaExt
+desc=CudaText plugin to manage list of global file paths and quick open from the list
+type=cudatext-plugin
+subdir=cuda_ext
+homepage=https://github.com/kvichans/cuda_favorites
+
+[item10]
+section=commands
+caption=Favorites...
+method=dlg_favorites
+;menu=0
+

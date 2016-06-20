@@ -1,0 +1,2 @@
+1.0.0 (2016-06-20)
+init: dlg Favorites (moved from cuda_ext)
