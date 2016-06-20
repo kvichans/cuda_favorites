@@ -7,7 +7,13 @@ homepage=https://github.com/kvichans/cuda_favorites
 
 [item10]
 section=commands
-caption=Favorites...
-method=dlg_favorites
+caption=Fa&vorites\Favorites...
+method=dlg
+;menu=0
+
+[item20]
+section=commands
+caption=Fa&vorites\&Add current file to Favorites
+method=add_cur
 ;menu=0
 

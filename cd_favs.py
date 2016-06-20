@@ -27,12 +27,25 @@ pass;                           ##!! waits correction
 
 GAP     = 5
 
+fav_json= app.app_path(app.APP_DIR_SETTINGS)+os.sep+'cuda_favorites.json'
+
 class Command:
-    def dlg_favorites(self):
+    def add_cur(self):
+        fn      = ed.get_filename()
+        if not fn:  return
+        stores  = json.loads(open(fav_json).read(), object_pairs_hook=OrdDict) \
+                    if os.path.exists(fav_json) else OrdDict()
+        files   = stores.get('fv_files', [])
+        if any([os.path.samefile(fn, f) for f in files]):   return
+        files  += [fn]
+        stores['fv_files'] = files
+        open(fav_json, 'w').write(json.dumps(stores, indent=4))
+       #def add_cur
+    
+    def dlg(self):
         pass;                  #LOG and log('=',())
-        store_json= app.app_path(app.APP_DIR_SETTINGS)+os.sep+'cuda_favorites.json'
-        stores  = json.loads(open(store_json).read(), object_pairs_hook=OrdDict) \
-                    if os.path.exists(store_json) else OrdDict()
+        stores  = json.loads(open(fav_json).read(), object_pairs_hook=OrdDict) \
+                    if os.path.exists(fav_json) else OrdDict()
         files   = stores.get('fv_files', [])
         fold    = stores.get('fv_fold', True)
         last    = stores.get('fv_last', 0)
@@ -68,9 +81,11 @@ class Command:
             # Modify
 #           store_b = False
             if False:pass
-            elif btn=='addc' and ed.get_filename() and ed.get_filename() not in files:
-                files  += [ed.get_filename()]
-                store_b = True
+            elif btn=='addc' and ed.get_filename():
+                fn      = ed.get_filename()
+                if not any([os.path.samefile(fn, f) for f in files]):
+                    files  += [fn]
+                    store_b = True
             elif btn=='brow':
                 fl      = app.dlg_file(True, '', '', '')
                 if fl and os.path.basename(fl).upper()=='SynFav.ini'.upper():
@@ -99,9 +114,9 @@ class Command:
                 stores['fv_files'] = files
                 stores['fv_fold' ] = fold 
                 stores['fv_last' ] = last 
-                open(store_json, 'w').write(json.dumps(stores, indent=4))
+                open(fav_json, 'w').write(json.dumps(stores, indent=4))
            #while
-       #def dlg_favorites
+       #def dlg
    #class Command
 
 '''
