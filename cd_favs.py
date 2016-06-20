@@ -14,7 +14,7 @@ from    .cd_plug_lib    import *
 
 OrdDict = collections.OrderedDict
 
-FROM_API_VERSION= '1.0.119'
+#FROM_API_VERSION= '1.0.119'
 
 # I18N
 _       = get_translation(__file__)
@@ -58,6 +58,7 @@ class Command:
                            ,fold=fold), focus_cid='fvrs')
             if btn is None or btn=='-': return None
             
+            store_b = fold != vals['fold']
             fold    = vals['fold']
             last    = vals['fvrs']
             if btn=='open' and files and last>=0 and os.path.isfile(files[last]):
@@ -65,7 +66,7 @@ class Command:
                 break#while
             
             # Modify
-            store_b = False
+#           store_b = False
             if False:pass
             elif btn=='addc' and ed.get_filename() and ed.get_filename() not in files:
                 files  += [ed.get_filename()]
