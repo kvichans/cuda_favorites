@@ -30,7 +30,7 @@ GAP     = 5
 class Command:
     def dlg_favorites(self):
         pass;                  #LOG and log('=',())
-        store_json= app.app_path(app.APP_DIR_SETTINGS)+os.sep+'cuda_ext.json'
+        store_json= app.app_path(app.APP_DIR_SETTINGS)+os.sep+'cuda_favorites.json'
         stores  = json.loads(open(store_json).read(), object_pairs_hook=OrdDict) \
                     if os.path.exists(store_json) else OrdDict()
         files   = stores.get('fv_files', [])
@@ -59,7 +59,7 @@ class Command:
             
             fold    = vals['fold']
             last    = vals['fvrs']
-            if btn=='open' and last>=0 and os.path.isfile(files[last]):
+            if btn=='open' and files and last>=0 and os.path.isfile(files[last]):
                 app.file_open(files[last])
                 break#while
             
@@ -81,11 +81,11 @@ class Command:
                 elif fl and fl not in files:
                     files  += [fl]
                     store_b = True
-            elif btn=='delt' and last>=0:
+            elif btn=='delt' and files and last>=0:
                 del files[last]
                 last    = max(0, len(files)-1)
                 store_b = True
-            elif btn in ('fvup', 'fvdn'):
+            elif btn in ('fvup', 'fvdn') and files:
                 newp    = last + (-1 if btn=='fvup' else +1)
                 if 0<=newp<len(files):
                     files[last], files[newp] = files[newp], files[last]
