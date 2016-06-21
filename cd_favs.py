@@ -1,8 +1,8 @@
-﻿''' Plugin for CudaText editor
+''' Plugin for CudaText editor
 Authors:
     Andrey Kvichansky    (kvichans on github.com)
 Version:
-    '1.0.0 2016-06-20'
+    '1.0.1 2016-06-21'
 ToDo: (see end of file)
 '''
 
@@ -60,13 +60,13 @@ class Command:
                  [dict(           tp='lb'   ,t=GAP          ,l=GAP          ,w=400      ,cap=_('&Files:')                       ) # &f
                  ,dict(cid='fvrs',tp='lbx'  ,t=GAP+20,h=250 ,l=GAP          ,w=400-GAP  ,items=itms                     ,en=hasf) # 
                  ,dict(cid='open',tp='bt'   ,t=GAP+20       ,l=GAP+400      ,w=100      ,cap=_('&Open')     ,props='1'  ,en=hasf) #     default
-                 ,dict(cid='addc',tp='bt'   ,t=GAP+75       ,l=GAP+400      ,w=100      ,cap=_('&Add opened')                   ) # &a
-                 ,dict(cid='brow',tp='bt'   ,t=GAP+100      ,l=GAP+400      ,w=100      ,cap=_('Add&...')   ,hint=brow_h        ) # &.
-                 ,dict(cid='delt',tp='bt'   ,t=GAP+135      ,l=GAP+400      ,w=100      ,cap=_('&Delete')               ,en=hasf) # &d
-                 ,dict(cid='fvup',tp='bt'   ,t=GAP+210      ,l=GAP+400      ,w=100      ,cap=_('Move &up')              ,en=hasf) # &u
-                 ,dict(cid='fvdn',tp='bt'   ,t=GAP+235      ,l=GAP+400      ,w=100      ,cap=_('Move do&wn')            ,en=hasf) # &w
-                 ,dict(cid='fold',tp='ch'   ,tid='-'        ,l=GAP          ,w=100      ,cap=_('Show &paths')   ,act='1'        ) # &p
-                 ,dict(cid='-'   ,tp='bt'   ,t=GAP+300-28   ,l=GAP+500-100  ,w=100      ,cap=_('Close')                         )
+                 ,dict(cid='addc',tp='bt'   ,t=GAP+70       ,l=GAP+400      ,w=100      ,cap=_('&Add opened')                   ) # &a
+                 ,dict(cid='brow',tp='bt'   ,t=GAP+95      ,l=GAP+400      ,w=100      ,cap=_('Add&...')   ,hint=brow_h        ) # &.
+                 ,dict(cid='delt',tp='bt'   ,t=GAP+120      ,l=GAP+400      ,w=100      ,cap=_('&Delete')               ,en=hasf) # &d
+                 ,dict(cid='fvup',tp='bt'   ,t=GAP+170      ,l=GAP+400      ,w=100      ,cap=_('Move &up')              ,en=hasf) # &u
+                 ,dict(cid='fvdn',tp='bt'   ,t=GAP+195      ,l=GAP+400      ,w=100      ,cap=_('Move do&wn')            ,en=hasf) # &w
+                 ,dict(cid='fold',tp='ch'   ,t=GAP+20+250+GAP ,l=GAP        ,w=100      ,cap=_('Show &paths')   ,act='1'        ) # &p
+                 ,dict(cid='-'   ,tp='bt'   ,t=GAP+245      ,l=GAP+500-100  ,w=100      ,cap=_('Close')                         )
                  ],    dict(fvrs=last
                            ,fold=fold), focus_cid='fvrs')
             if btn is None or btn=='-': return None
