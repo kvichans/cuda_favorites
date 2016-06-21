@@ -1,4 +1,4 @@
-''' Plugin for CudaText editor
+﻿''' Plugin for CudaText editor
 Authors:
     Andrey Kvichansky    (kvichans on github.com)
 Version:
@@ -30,9 +30,10 @@ GAP     = 5
 fav_json= app.app_path(app.APP_DIR_SETTINGS)+os.sep+'cuda_favorites.json'
 
 class Command:
-    def add_cur(self):
-        fn      = ed.get_filename()
+    def add_filename(self, fn):
         if not fn:  return
+        app.msg_status(_('Added to Favorites: ')+fn)
+        
         stores  = json.loads(open(fav_json).read(), object_pairs_hook=OrdDict) \
                     if os.path.exists(fav_json) else OrdDict()
         files   = stores.get('fv_files', [])
@@ -40,7 +41,12 @@ class Command:
         files  += [fn]
         stores['fv_files'] = files
         open(fav_json, 'w').write(json.dumps(stores, indent=4))
-       #def add_cur
+       #def add_filename
+       
+    def add_cur_file(self):
+        self.add_filename(ed.get_filename())
+    def add_cur_project(self):
+        pass
     
     def dlg(self):
         pass;                  #LOG and log('=',())
