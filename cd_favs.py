@@ -2,19 +2,16 @@
 Authors:
     Andrey Kvichansky    (kvichans on github.com)
 Version:
-    '1.0.1 2016-06-21'
+    '1.0.3 2016-06-21'
 ToDo: (see end of file)
 '''
 
-import  re, os, json, collections
+import  re, os, json
 import  cudatext            as app
 from    cudatext        import ed
 from    cudax_lib       import log
 from    .cd_plug_lib    import *
-
-OrdDict = collections.OrderedDict
-
-#FROM_API_VERSION= '1.0.119'
+from collections import OrderedDict as OrdDict
 
 # I18N
 _       = get_translation(__file__)
@@ -28,6 +25,17 @@ pass;                           ##!! waits correction
 GAP     = 5
 
 fav_json= app.app_path(app.APP_DIR_SETTINGS)+os.sep+'cuda_favorites.json'
+
+def listbox_prefix(n):
+    if 0<=n<=8:
+        s = str(n+1)
+    elif n==9:
+        s = '0'
+    elif 10<=n<=10+ord('Z')-ord('A'):
+        s = chr(n-10+ord('A'))
+    else:
+        s = ' '
+    return s + ': '
 
 class Command:
     def add_filename(self, fn):
@@ -58,9 +66,12 @@ class Command:
         brow_h  = 'Select file to append.\rTip: Select "SynFav.ini" for import Favorites from SynWrite.'
         while True:
             hasf= bool(files)
-            itms= [f('{} ({})', os.path.basename(fv), os.path.dirname(fv)) for fv in files] \
-                    if fold else \
-                  [f('{}'     , os.path.basename(fv)                     ) for fv in files]
+            itms= [
+                    listbox_prefix(n) + 
+                    os.path.basename(fv) + 
+                    ('  ('+os.path.dirname(fv)+')' if fold else '') 
+                    for (n, fv) in enumerate(files)
+                    ]
             itms= itms if itms else [' ']
             btn,vals,chds   = dlg_wrapper(_('Favorites'), GAP+500+GAP,GAP+300+GAP,     #NOTE: dlg-favorites
                  [dict(           tp='lb'   ,t=GAP          ,l=GAP          ,w=400      ,cap=_('&Files:')                       ) # &f
