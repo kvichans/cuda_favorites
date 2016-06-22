@@ -15,6 +15,7 @@ from    time        import perf_counter
 import  cudatext        as app
 import  cudax_lib       as apx
 #from   cudax_lib   import log
+pass;                           from pprint import pformat
 
 c13,c10,c9  = chr(13),chr(10),chr(9)
 REDUCTS = {'lb'     :'label'
@@ -395,8 +396,9 @@ def dlg_wrapper(title, w, h, cnts, in_vals={}, focus_cid=None):
             lst    += ['act='+('1' if val in [True, '1'] else '0')]
         pass;                      #LOG and log('lst={}',lst)
         ctrls_l+= [chr(1).join(lst)]
-    pass;                  #LOG and log('ok ctrls_l={}',pformat(ctrls_l, width=120))
-
+    
+    pass;                      #log('ok ctrls_l={}',pformat(ctrls_l, width=120))
+    
     ans     = app.dlg_custom(title, w, h, '\n'.join(ctrls_l), cid2i.get(focus_cid, -1))
     if ans is None: return None, None, None   # btn_cid, {cid:v}, [cid]
 

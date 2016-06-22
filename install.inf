@@ -13,7 +13,13 @@ method=dlg
 
 [item20]
 section=commands
-caption=Fa&vorites\&Add current file to Favorites
-method=add_cur
+caption=Fa&vorites\&Add current file
+method=add_cur_file
+;menu=0
+
+[item21]
+section=commands
+caption=Fa&vorites\Add current &project
+method=add_cur_proj
 ;menu=0
 
