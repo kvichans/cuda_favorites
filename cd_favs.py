@@ -14,7 +14,7 @@ from    .cd_plug_lib    import *
 
 OrdDict = collections.OrderedDict
 
-#FROM_API_VERSION= '1.0.119'
+FROM_API_VERSION= '1.0.146'
 
 # I18N
 _       = get_translation(__file__)
@@ -28,6 +28,23 @@ pass;                           ##!! waits correction
 GAP     = 5
 
 fav_json= app.app_path(app.APP_DIR_SETTINGS)+os.sep+'cuda_favorites.json'
+def get_fav_data():
+    return json.loads(open(fav_json).read(), object_pairs_hook=OrdDict) \
+            if os.path.exists(fav_json) else \
+           OrdDict()
+def save_fav_data(fvdata):
+    open(fav_json, 'w').write(json.dumps(fvdata, indent=4))
+
+def import_SynFav(fn_ini, files):
+    # Import from Syn
+    chnd    = False
+    syn_lns = open(fn_ini, encoding='utf-16').read().splitlines()
+    for syn_ln in syn_lns:
+        if not os.path.isfile(syn_ln) \
+        or any([os.path.samefile(syn_ln, f) for f in files]): continue
+        files  += [syn_ln]
+        chnd    = True
+    return chnd
 
 class Command:
     def add_cur_proj(self):
@@ -36,39 +53,32 @@ class Command:
         self._add_filename(ed.get_filename())
     def _add_filename(self, fn):
         if not fn:  return
-        stores  = json.loads(open(fav_json).read(), object_pairs_hook=OrdDict) \
-                    if os.path.exists(fav_json) else OrdDict()
-        files   = stores.get('fv_files', [])
+        fvdata  = get_fav_data()
+        files   = fvdata.get('fv_files', [])
         if any([os.path.samefile(fn, f) for f in files]):   return
         files  += [fn]
-        stores['fv_files'] = files
-        open(fav_json, 'w').write(json.dumps(stores, indent=4))
+        fvdata['fv_files'] = files
+        save_fav_data(fvdata)
         app.msg_status(_('Added to Favorites: ')+fn)
        #def _add_filename
     
     def dlg(self):
+#       if app.app_api_version()<'1.0.146':  return app.msg_status(_("Need update CudaText"))   # dlg_custom: "type=tabs"
         pass;                  #LOG and log('=',())
-        stores  = json.loads(open(fav_json).read(), object_pairs_hook=OrdDict) \
-                    if os.path.exists(fav_json) else OrdDict()
-        files   = stores.get('fv_files', [])
-        fold    = stores.get('fv_fold', True)
-        last    = stores.get('fv_last', 0)
+        fvdata  = get_fav_data()
+        files   = fvdata.get('fv_files', [])
+        fold    = fvdata.get('fv_fold', True)
+        last    = fvdata.get('fv_last', 0)
         fvrs_h  = _('Choose file.'
                     '\rUse Alt+1, Alt+2, ..., Alt+9, Alt+0'
                     '\rto direct open file'
                     '\r"1: *", "2: *",..., "9: *", "0: *"')
         brow_h  = _('Choose file to append')#.\rTip: Select "SynFav.ini" for import Favorites from SynWrite.'
         def n2c(n):
-            if False:pass
-            elif 1<=n<=9:
-                c = str(n)
-            elif n==10:
-                c = '0'
-            elif 11<=n<=11+ord('Z')-ord('A'):
-                c = chr(n-11+ord('A'))
-            else:
-                c = ' '
-            return c
+            if  1<=n<= 9:                   return str(n)
+            if     n==10:                   return '0'
+            if 11<=n<=11+ord('Z')-ord('A'): return chr(n-11+ord('A'))
+            return ' '
         while True:
             hasf= bool(files)
             itms= [f('{}: {}{}'
@@ -78,8 +88,9 @@ class Command:
                     ) 
                     for nf,fn in enumerate(files)]
             itms= itms if itms else [' ']
-            btn,vals,chds   = dlg_wrapper(_('Favorites'), GAP+500+GAP,GAP+300+GAP,     #NOTE: dlg-favorites
+            btn,vals,chds   = dlg_wrapper(_('Favorites'), GAP+500+GAP,GAP+300+GAP,
                  [dict(           tp='lb'   ,t=GAP          ,l=GAP          ,w=400      ,cap=_('&Files:')   ,hint=fvrs_h        ) # &f
+#                ,dict(cid='tabs',tp='tabs' ,t=1,h=25       ,l=50           ,w=300      ,items=['Files', 'Projects']            ) # 
                  ,dict(cid='fvrs',tp='lbx'  ,t=GAP+20,h=250 ,l=GAP          ,w=400-GAP  ,items=itms                     ,en=hasf) # 
                  ,dict(cid='open',tp='bt'   ,t=GAP+20       ,l=GAP+400      ,w=100      ,cap=_('&Open')     ,props='1'  ,en=hasf) #     default
                  ,dict(cid='addc',tp='bt'   ,t=GAP+75       ,l=GAP+400      ,w=100      ,cap=_('&Add opened')                   ) # &a
@@ -100,6 +111,7 @@ class Command:
                  ,dict(cid='act8',tp='bt'   ,t=0            ,l=0            ,w=0        ,cap=_('&9')                            ) # &9
                  ,dict(cid='act9',tp='bt'   ,t=0            ,l=0            ,w=0        ,cap=_('&0')                            ) # &0
                  ],    dict(fvrs=last
+#                          ,tabs=0
                            ,fold=fold), focus_cid='fvrs')
             if btn is None or btn=='-': return None
             
@@ -111,8 +123,8 @@ class Command:
             if btn[0:3]=='act' and files:
                 nf  = int(btn[3])
                 if nf<len(files) and os.path.isfile(files[nf]):
-                    stores['fv_last' ] = nf 
-                    open(fav_json, 'w').write(json.dumps(stores, indent=4))
+                    fvdata['fv_last' ] = nf 
+                    save_fav_data(fvdata)
                     app.file_open(files[nf])
                     break#while
             
@@ -125,20 +137,15 @@ class Command:
                     files  += [fn]
                     store_b = True
             elif btn=='brow':
-                fl      = app.dlg_file(True, '', '', '')
-                if fl and os.path.basename(fl).upper()=='SynFav.ini'.upper():
-                    # Import from Syn
-                    syn_lns = open(fl, encoding='utf-16').read().splitlines()
-                    for syn_ln in syn_lns:
-                        if os.path.isfile(syn_ln) and syn_ln not in files:
-                            files  += [syn_ln]
-                            store_b = True
-                elif fl and fl not in files:
-                    files  += [fl]
+                fn      = app.dlg_file(True, '', '', '')
+                if fn and os.path.basename(fn).upper()=='SynFav.ini'.upper():
+                    store_b = import_SynFav(fn, files)
+                elif fn and fn not in files:
+                    files  += [fn]
                     store_b = True
             elif btn=='delt' and files and last>=0:
                 del files[last]
-                last    = max(0, len(files)-1)
+                last    = min(max(0, last), len(files)-1)
                 store_b = True
             elif btn in ('fvup', 'fvdn') and files:
                 newp    = last + (-1 if btn=='fvup' else +1)
@@ -149,10 +156,10 @@ class Command:
             
             # Store
             if store_b:
-                stores['fv_files'] = files
-                stores['fv_fold' ] = fold 
-                stores['fv_last' ] = last 
-                open(fav_json, 'w').write(json.dumps(stores, indent=4))
+                fvdata['fv_files'] = files
+                fvdata['fv_fold' ] = fold 
+                fvdata['fv_last' ] = last 
+                save_fav_data(fvdata)
            #while
        #def dlg
    #class Command
