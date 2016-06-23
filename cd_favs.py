@@ -2,7 +2,7 @@
 Authors:
     Andrey Kvichansky    (kvichans on github.com)
 Version:
-    '1.0.4 2016-06-22'
+    '1.0.6 2016-06-23'
 ToDo: (see end of file)
 '''
 
@@ -25,7 +25,7 @@ pass;                          #pfrm15=lambda d:pformat(d,width=15)
 pass;                           LOG = (-2==-2)  # Do or dont logging.
 pass;                           ##!! waits correction
 
-GAP     = 5
+#GAP     = 5
 
 fav_json= app.app_path(app.APP_DIR_SETTINGS)+os.sep+'cuda_favorites.json'
 def get_fav_data():
@@ -63,102 +63,118 @@ class Command:
        #def _add_filename
     
     def dlg(self):
-#       if app.app_api_version()<'1.0.146':  return app.msg_status(_("Need update CudaText"))   # dlg_custom: "type=tabs"
+        if app.app_api_version()<'1.0.146':  return app.msg_status(_("Need update CudaText"))   # dlg_custom: "type=tabs"
         pass;                  #LOG and log('=',())
         fvdata  = get_fav_data()
+        tab_nms = fvdata.get('fv_tabs', [_('Fi&les'), _('Pro&jects')])
+        tabs    = fvdata.get('fv_tab', 0)
         files   = fvdata.get('fv_files', [])
+        projs   = fvdata.get('fv_projs', [])
         fold    = fvdata.get('fv_fold', True)
         last    = fvdata.get('fv_last', 0)
-        fvrs_h  = _('Choose file.'
-                    '\rUse Alt+1, Alt+2, ..., Alt+9, Alt+0'
-                    '\rto direct open file'
-                    '\r"1: *", "2: *",..., "9: *", "0: *"')
-        brow_h  = _('Choose file to append')#.\rTip: Select "SynFav.ini" for import Favorites from SynWrite.'
+        fvrs_h  = _('Choose file to open.')
+        brow_h  = _('Choose file to append.')
         def n2c(n):
-            if  1<=n<= 9:                   return str(n)
-            if     n==10:                   return '0'
+            if  1<=n<=10:                   return str(n%10)
             if 11<=n<=11+ord('Z')-ord('A'): return chr(n-11+ord('A'))
             return ' '
         while True:
-            hasf= bool(files)
-            itms= [f('{}: {}{}'
+            paths   = files if tabs==0 else projs
+            hasf    = bool(paths)
+            itms    = [f('{}: {}{}'
                     , n2c(1+nf)
                     , os.path.basename(fn)
                     , ' ('+os.path.dirname(fn)+')' if fold else ''
                     ) 
-                    for nf,fn in enumerate(files)]
-            itms= itms if itms else [' ']
-            btn,vals,chds   = dlg_wrapper(_('Favorites'), GAP+500+GAP,GAP+300+GAP,
-                 [dict(           tp='lb'   ,t=GAP          ,l=GAP          ,w=400      ,cap=_('&Files:')   ,hint=fvrs_h        ) # &f
-#                ,dict(cid='tabs',tp='tabs' ,t=1,h=25       ,l=50           ,w=300      ,items=['Files', 'Projects']            ) # 
-                 ,dict(cid='fvrs',tp='lbx'  ,t=GAP+20,h=250 ,l=GAP          ,w=400-GAP  ,items=itms                     ,en=hasf) # 
-                 ,dict(cid='open',tp='bt'   ,t=GAP+20       ,l=GAP+400      ,w=100      ,cap=_('&Open')     ,props='1'  ,en=hasf) #     default
-                 ,dict(cid='addc',tp='bt'   ,t=GAP+75       ,l=GAP+400      ,w=100      ,cap=_('&Add opened')                   ) # &a
-                 ,dict(cid='brow',tp='bt'   ,t=GAP+100      ,l=GAP+400      ,w=100      ,cap=_('Add&...')   ,hint=brow_h        ) # &.
-                 ,dict(cid='delt',tp='bt'   ,t=GAP+135      ,l=GAP+400      ,w=100      ,cap=_('&Delete')               ,en=hasf) # &d
-                 ,dict(cid='fvup',tp='bt'   ,t=GAP+210      ,l=GAP+400      ,w=100      ,cap=_('Move &up')              ,en=hasf) # &u
-                 ,dict(cid='fvdn',tp='bt'   ,t=GAP+235      ,l=GAP+400      ,w=100      ,cap=_('Move do&wn')            ,en=hasf) # &w
-                 ,dict(cid='fold',tp='ch'   ,tid='-'        ,l=GAP          ,w=100      ,cap=_('Show &paths')   ,act='1'        ) # &p
-                 ,dict(cid='-'   ,tp='bt'   ,t=GAP+300-28   ,l=GAP+500-100  ,w=100      ,cap=_('Close')                         )
-                 ,dict(cid='act0',tp='bt'   ,t=0            ,l=0            ,w=0        ,cap=_('&1')                            ) # &1
-                 ,dict(cid='act1',tp='bt'   ,t=0            ,l=0            ,w=0        ,cap=_('&2')                            ) # &2
-                 ,dict(cid='act2',tp='bt'   ,t=0            ,l=0            ,w=0        ,cap=_('&3')                            ) # &3
-                 ,dict(cid='act3',tp='bt'   ,t=0            ,l=0            ,w=0        ,cap=_('&4')                            ) # &4
-                 ,dict(cid='act4',tp='bt'   ,t=0            ,l=0            ,w=0        ,cap=_('&5')                            ) # &5
-                 ,dict(cid='act5',tp='bt'   ,t=0            ,l=0            ,w=0        ,cap=_('&6')                            ) # &6
-                 ,dict(cid='act6',tp='bt'   ,t=0            ,l=0            ,w=0        ,cap=_('&7')                            ) # &7
-                 ,dict(cid='act7',tp='bt'   ,t=0            ,l=0            ,w=0        ,cap=_('&8')                            ) # &8
-                 ,dict(cid='act8',tp='bt'   ,t=0            ,l=0            ,w=0        ,cap=_('&9')                            ) # &9
-                 ,dict(cid='act9',tp='bt'   ,t=0            ,l=0            ,w=0        ,cap=_('&0')                            ) # &0
-                 ],    dict(fvrs=last
-#                          ,tabs=0
+                    for nf,fn in enumerate(paths)]
+            itms    = itms if itms else [' ']
+            aid,vals,chds   = dlg_wrapper(_('Favorites'), 500+10,300+10,
+                 [
+#                 dict(           tp='lb'   ,t=5            ,l=5            ,w=400      ,cap=_('&Files:')   ,hint=fvrs_h        ) # &f
+                  dict(cid='tabs',tp='tabs' ,t=5,h=25       ,l=5            ,w=400-5    ,items=tab_nms          ,act='1'        ) # 
+                 ,dict(cid='fvrs',tp='lbx'  ,t=5+20,h=250   ,l=5            ,w=400-5    ,items=itms                     ,en=hasf) # 
+                 ,dict(cid='open',tp='bt'   ,t=5+20         ,l=5+400        ,w=100      ,cap=_('&Open')     ,props='1'  ,en=hasf) #     default
+                 ,dict(cid='addc',tp='bt'   ,t=5+65         ,l=5+400        ,w=100      ,cap=_('&Add opened')                   ) # &a
+                 ,dict(cid='brow',tp='bt'   ,t=5+90         ,l=5+400        ,w=100      ,cap=_('Add&...')   ,hint=brow_h        ) # &.
+                 ,dict(cid='delt',tp='bt'   ,t=5+135        ,l=5+400        ,w=100      ,cap=_('&Delete')               ,en=hasf) # &d
+                 ,dict(cid='fvup',tp='bt'   ,t=5+180        ,l=5+400        ,w=100      ,cap=_('Move &up')              ,en=hasf) # &u
+                 ,dict(cid='fvdn',tp='bt'   ,t=5+205        ,l=5+400        ,w=100      ,cap=_('Move do&wn')            ,en=hasf) # &w
+                 ,dict(cid='fold',tp='ch'   ,tid='-'        ,l=5            ,w=100      ,cap=_('Show &paths')   ,act='1'        ) # &p
+                 ,dict(cid='help',tp='bt'   ,t=5+300-53     ,l=5+500-100    ,w=100      ,cap=_('&Help')                         ) # &h
+                 ,dict(cid='-'   ,tp='bt'   ,t=5+300-28     ,l=5+500-100    ,w=100      ,cap=_('Close')                         )
+                 ]+
+                 [dict(cid='act'+str(n),tp='bt',cap='&'+str((n+1)%10),t=0,l=0,w=0) for n in range(10)]                           # &1 - &0
+                 ,    dict(fvrs=last
+                           ,tabs=tabs
                            ,fold=fold), focus_cid='fvrs')
-            if btn is None or btn=='-': return None
+            if aid is None or aid=='-': return None
+            if aid=='help':
+                dlg_wrapper(_('Help for "Favorites"'), 410, 310,
+                     [dict(cid='htxt',tp='me'    ,t=5  ,h=300-28,l=5          ,w=400  ,props='1,0,1'  ) #  ro,mono,border
+                     ,dict(cid='-'   ,tp='bt'    ,t=5+300-23    ,l=5+400-80   ,w=80   ,cap=_('&Close'))
+                     ], dict(htxt=_(  '• Quick opening.'
+                                    '\rUse Alt+1, Alt+2, ..., Alt+9, Alt+0'
+                                    '\rto direct open file'
+                                    '\r"1: *", "2: *",..., "9: *", "0: *"'
+                                    '\r '
+                                    '\r• Import. '
+                                    '\rSelect "SynFav.ini" for "Add..." to import Favorites from SynWrite.'
+                                    '\rSee "SynFav.ini" in folder "SynWrite/Settings".'
+                                    )
+                     ), focus_cid='htxt')
+                continue#while
             
             fold    = vals['fold']
             last    = vals['fvrs']
-            if btn=='open' and files and last>=0 and os.path.isfile(files[last]):
-                app.file_open(files[last])
+            tabs    = vals['tabs']
+            if aid=='open' and paths and last>=0 and os.path.isfile(paths[last]):
+                app.file_open(paths[last])
                 break#while
-            if btn[0:3]=='act' and files:
-                nf  = int(btn[3])
-                if nf<len(files) and os.path.isfile(files[nf]):
+            if aid[0:3]=='act' and paths:
+                nf  = int(aid[3])
+                if nf<len(paths) and os.path.isfile(paths[nf]):
                     fvdata['fv_last' ] = nf 
                     save_fav_data(fvdata)
-                    app.file_open(files[nf])
+                    app.file_open(paths[nf])
                     break#while
+                    
+            if aid=='tabs':
+                pass;          #LOG and log('tabs={}',(tabs))
+                continue#while
             
             # Modify
             store_b = 'fold' in chds
             if False:pass
-            elif btn=='addc' and ed.get_filename():
+            elif aid=='addc':
                 fn      = ed.get_filename()
-                if not any([os.path.samefile(fn, f) for f in files]):
-                    files  += [fn]
+                if fn and not any([os.path.samefile(fn, f) for f in paths]):
+                    paths  += [fn]
                     store_b = True
-            elif btn=='brow':
+            elif aid=='brow':
                 fn      = app.dlg_file(True, '', '', '')
                 if fn and os.path.basename(fn).upper()=='SynFav.ini'.upper():
-                    store_b = import_SynFav(fn, files)
-                elif fn and fn not in files:
-                    files  += [fn]
+                    store_b = import_SynFav(fn, paths)
+                elif fn and not any([os.path.samefile(fn, f) for f in paths]):
+                    paths  += [fn]
                     store_b = True
-            elif btn=='delt' and files and last>=0:
-                del files[last]
-                last    = min(max(0, last), len(files)-1)
+            elif aid=='delt' and paths and last>=0:
+                del paths[last]
+                last    = min(max(0, last), len(paths)-1)
                 store_b = True
-            elif btn in ('fvup', 'fvdn') and files:
-                newp    = last + (-1 if btn=='fvup' else +1)
-                if 0<=newp<len(files):
-                    files[last], files[newp] = files[newp], files[last]
+            elif aid in ('fvup', 'fvdn') and paths:
+                newp    = last + (-1 if aid=='fvup' else +1)
+                if 0<=newp<len(paths):
+                    paths[last], paths[newp] = paths[newp], paths[last]
                     last    = newp
                     store_b = True
             
             # Store
             if store_b:
-                fvdata['fv_files'] = files
-                fvdata['fv_fold' ] = fold 
-                fvdata['fv_last' ] = last 
+                fvdata['fv_tab']    = tabs
+                fvdata['fv_files']  = files
+                fvdata['fv_projs']  = projs
+                fvdata['fv_fold' ]  = fold 
+                fvdata['fv_last' ]  = last 
                 save_fav_data(fvdata)
            #while
        #def dlg

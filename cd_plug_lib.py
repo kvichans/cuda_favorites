@@ -35,6 +35,7 @@ REDUCTS = {'lb'     :'label'
         ,  'ch-lbx' :'checklistbox'
         ,  'lvw'    :'listview'
         ,  'ch-lvw' :'checklistview'
+        ,  'tabs'   :'tabs'
         }
 
 def f(s, *args, **kwargs):return s.format(*args, **kwargs)
