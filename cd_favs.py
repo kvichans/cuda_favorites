@@ -80,6 +80,7 @@ class Command:
             return ' '
         while True:
             paths   = files if tabs==0 else projs
+            last    = min(max(0, last), len(paths)-1)
             hasf    = bool(paths)
             itms    = [f('{}: {}{}'
                     , n2c(1+nf)
@@ -91,8 +92,8 @@ class Command:
             aid,vals,chds   = dlg_wrapper(_('Favorites'), 500+10,300+10,
                  [
 #                 dict(           tp='lb'   ,t=5            ,l=5            ,w=400      ,cap=_('&Files:')   ,hint=fvrs_h        ) # &f
-                  dict(cid='tabs',tp='tabs' ,t=5,h=25       ,l=5            ,w=400-5    ,items=tab_nms          ,act='1'        ) # 
-                 ,dict(cid='fvrs',tp='lbx'  ,t=5+20,h=250   ,l=5            ,w=400-5    ,items=itms                     ,en=hasf) # 
+                  dict(cid='tabs',tp='tabs' ,t=5,h=30       ,l=5            ,w=400-3    ,items=tab_nms          ,act='1'        ) # 
+                 ,dict(cid='fvrs',tp='lbx'  ,t=5+23,h=240   ,l=5            ,w=400-5    ,items=itms                     ,en=hasf)
                  ,dict(cid='open',tp='bt'   ,t=5+20         ,l=5+400        ,w=100      ,cap=_('&Open')     ,props='1'  ,en=hasf) #     default
                  ,dict(cid='addc',tp='bt'   ,t=5+65         ,l=5+400        ,w=100      ,cap=_('&Add opened')                   ) # &a
                  ,dict(cid='brow',tp='bt'   ,t=5+90         ,l=5+400        ,w=100      ,cap=_('Add&...')   ,hint=brow_h        ) # &.
