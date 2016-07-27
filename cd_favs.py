@@ -1,8 +1,8 @@
-﻿''' Plugin for CudaText editor
+''' Plugin for CudaText editor
 Authors:
     Andrey Kvichansky    (kvichans on github.com)
 Version:
-    '1.0.6 2016-06-23'
+    '1.0.7 2016-07-26'
 ToDo: (see end of file)
 '''
 
@@ -48,9 +48,22 @@ def import_SynFav(fn_ini, files):
 
 class Command:
     def add_cur_proj(self):
-        pass
+        try:
+            import cuda_project_man
+        except ImportError:
+            app.msg_box('Project Manager plugin not installed', app.MB_OK+app.MB_ICONERROR)
+            return
+        
+        info = cuda_project_man.global_project_info
+        fn = info.get('filename', '')
+        if fn:
+            self._add_filename(fn)
+        else:
+            app.msg_box('Project Manager plugin has not opened project', app.MB_OK+app.MB_ICONWARNING)
+        
     def add_cur_file(self):
         self._add_filename(ed.get_filename())
+        
     def _add_filename(self, fn):
         if not fn:  return
         fvdata  = get_fav_data()
