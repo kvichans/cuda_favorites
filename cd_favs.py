@@ -1,4 +1,4 @@
-''' Plugin for CudaText editor
+﻿''' Plugin for CudaText editor
 Authors:
     Andrey Kvichansky    (kvichans on github.com)
 Version:
@@ -57,20 +57,21 @@ class Command:
         info = cuda_project_man.global_project_info
         fn = info.get('filename', '')
         if fn:
-            self._add_filename(fn)
+            self._add_filename(fn, True)
         else:
             app.msg_box('Project Manager plugin has not opened project', app.MB_OK+app.MB_ICONWARNING)
         
     def add_cur_file(self):
         self._add_filename(ed.get_filename())
         
-    def _add_filename(self, fn):
+    def _add_filename(self, fn, is_project=False):
         if not fn:  return
+        s_key = 'fv_projs' if is_project else 'fv_files'
         fvdata  = get_fav_data()
-        files   = fvdata.get('fv_files', [])
+        files   = fvdata.get(s_key, [])
         if any([os.path.samefile(fn, f) for f in files]):   return
         files  += [fn]
-        fvdata['fv_files'] = files
+        fvdata[s_key] = files
         save_fav_data(fvdata)
         app.msg_status(_('Added to Favorites: ')+fn)
        #def _add_filename
