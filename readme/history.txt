@@ -1,3 +1,7 @@
+
+1.0.7 (2016-07-26)
+added: Add-project works, if installed ProjectMan plugin
+
 1.0.4 (2016-06-22)
 added: prefix as "1:" for selection
 added: Alt+1,...Alt+0 to open first 10 items
