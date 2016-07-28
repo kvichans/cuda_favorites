@@ -2,7 +2,7 @@
 Authors:
     Andrey Kvichansky    (kvichans on github.com)
 Version:
-    '1.0.7 2016-07-26'
+    '1.0.8 2016-07-28'
 ToDo: (see end of file)
 '''
 
@@ -51,16 +51,16 @@ class Command:
         try:
             import cuda_project_man
         except ImportError:
-            app.msg_box('Project Manager plugin not installed', app.MB_OK+app.MB_ICONERROR)
+            app.msg_status(_('Project Manager plugin not installed'))
             return
         
-        info = cuda_project_man.global_project_info
-        fn = info.get('filename', '')
+        pjm_info= cuda_project_man.global_project_info
+        fn      = pjm_info.get('filename', '')
         if fn:
             self._add_filename(fn, True)
         else:
-            app.msg_box('Project Manager plugin has not opened project', app.MB_OK+app.MB_ICONWARNING)
-        
+            app.msg_status(_('Project Manager plugin has not opened project'))
+
     def add_cur_file(self):
         self._add_filename(ed.get_filename())
         
@@ -69,7 +69,8 @@ class Command:
         s_key = 'fv_projs' if is_project else 'fv_files'
         fvdata  = get_fav_data()
         files   = fvdata.get(s_key, [])
-        if any([os.path.samefile(fn, f) for f in files]):   return
+        if any([os.path.samefile(fn, f) for f in files]):
+            return app.msg_status(_('Already in Favorites: ')+fn)
         files  += [fn]
         fvdata[s_key] = files
         save_fav_data(fvdata)
@@ -109,7 +110,7 @@ class Command:
                   dict(cid='tabs',tp='tabs' ,t=5,h=30       ,l=5            ,w=400-3    ,items=tab_nms          ,act='1'        ) # 
                  ,dict(cid='fvrs',tp='lbx'  ,t=5+23,h=240   ,l=5            ,w=400-5    ,items=itms                     ,en=hasf)
                  ,dict(cid='open',tp='bt'   ,t=5+20         ,l=5+400        ,w=100      ,cap=_('&Open')     ,props='1'  ,en=hasf) #     default
-                 ,dict(cid='addc',tp='bt'   ,t=5+65         ,l=5+400        ,w=100      ,cap=_('&Add opened')                   ) # &a
+                 ,dict(cid='addc',tp='bt'   ,t=5+65         ,l=5+400        ,w=100      ,cap=_('&Add opened')           ,en=(tabs==0)) # &a
                  ,dict(cid='brow',tp='bt'   ,t=5+90         ,l=5+400        ,w=100      ,cap=_('Add&...')   ,hint=brow_h        ) # &.
                  ,dict(cid='delt',tp='bt'   ,t=5+135        ,l=5+400        ,w=100      ,cap=_('&Delete')               ,en=hasf) # &d
                  ,dict(cid='fvup',tp='bt'   ,t=5+180        ,l=5+400        ,w=100      ,cap=_('Move &up')              ,en=hasf) # &u
