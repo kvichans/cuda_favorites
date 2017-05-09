@@ -2,7 +2,7 @@
 Authors:
     Andrey Kvichansky    (kvichans on github.com)
 Version:
-    '1.0.8 2016-07-28'
+    '1.0.9 2017-05-09'
 ToDo: (see end of file)
 '''
 
@@ -115,14 +115,14 @@ class Command:
                  ,dict(cid='delt',tp='bt'   ,t=5+135        ,l=5+400        ,w=100      ,cap=_('&Delete')               ,en=hasf) # &d
                  ,dict(cid='fvup',tp='bt'   ,t=5+180        ,l=5+400        ,w=100      ,cap=_('Move &up')              ,en=hasf) # &u
                  ,dict(cid='fvdn',tp='bt'   ,t=5+205        ,l=5+400        ,w=100      ,cap=_('Move do&wn')            ,en=hasf) # &w
-                 ,dict(cid='fold',tp='ch'   ,tid='-'        ,l=5            ,w=100      ,cap=_('Show &paths')   ,act='1'        ) # &p
+                 ,dict(cid='fold',tp='ch'   ,tid='-'        ,l=5            ,w=120      ,cap=_('Show &paths')   ,act='1'        ) # &p
                  ,dict(cid='help',tp='bt'   ,t=5+300-53     ,l=5+500-100    ,w=100      ,cap=_('&Help')                         ) # &h
                  ,dict(cid='-'   ,tp='bt'   ,t=5+300-28     ,l=5+500-100    ,w=100      ,cap=_('Close')                         )
                  ]+
                  [dict(cid='act'+str(n),tp='bt',cap='&'+str((n+1)%10),t=0,l=0,w=0) for n in range(10)]                           # &1 - &0
                  ,    dict(fvrs=last
-                           ,tabs=tabs
-                           ,fold=fold), focus_cid='fvrs')
+                          ,tabs=tabs
+                          ,fold=fold), focus_cid='fvrs')
             if aid is None or aid=='-': return None
             if aid=='help':
                 dlg_wrapper(_('Help for "Favorites"'), 410, 310,
@@ -144,12 +144,22 @@ class Command:
             last    = vals['fvrs']
             tabs    = vals['tabs']
             if aid=='open' and paths and last>=0 and os.path.isfile(paths[last]):
+                fvdata['fv_tab']    = tabs
+                fvdata['fv_files']  = files
+                fvdata['fv_projs']  = projs
+                fvdata['fv_fold' ]  = fold 
+                fvdata['fv_last' ]  = last 
+                save_fav_data(fvdata)
                 app.file_open(paths[last])
                 break#while
             if aid[0:3]=='act' and paths:
                 nf  = int(aid[3])
                 if nf<len(paths) and os.path.isfile(paths[nf]):
-                    fvdata['fv_last' ] = nf 
+                    fvdata['fv_tab']    = tabs
+                    fvdata['fv_files']  = files
+                    fvdata['fv_projs']  = projs
+                    fvdata['fv_fold' ]  = fold 
+                    fvdata['fv_last' ]  = nf 
                     save_fav_data(fvdata)
                     app.file_open(paths[nf])
                     break#while
