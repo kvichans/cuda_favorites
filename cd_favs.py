@@ -2,7 +2,7 @@
 Authors:
     Andrey Kvichansky    (kvichans on github.com)
 Version:
-    '1.0.9 2017-05-09'
+    '1.1.01 2019-01-24'
 ToDo: (see end of file)
 '''
 
@@ -88,7 +88,9 @@ class Command:
         fold    = fvdata.get('fv_fold', True)
         last    = fvdata.get('fv_last', 0)
         fvrs_h  = _('Choose file to open.')
-        brow_h  = _('Choose file to append.')
+        brow_h  = _('Choose file to append.'
+                '\r    Shift+Click to choose folder'
+                   )
         def n2c(n):
             if  1<=n<=10:                   return str(n%10)
             if 11<=n<=11+ord('Z')-ord('A'): return chr(n-11+ord('A'))
@@ -99,7 +101,11 @@ class Command:
             hasf    = bool(paths)
             itms    = [f('{}: {}{}'
                     , n2c(1+nf)
-                    , os.path.basename(fn)
+                    , os.path.basename(fn) 
+                        if os.path.isfile(fn) else 
+                      '['+os.path.basename(fn)+']' 
+                        if os.path.isdir(fn) else 
+                      '? '+os.path.basename(fn) 
                     , ' ('+os.path.dirname(fn)+')' if fold else ''
                     ) 
                     for nf,fn in enumerate(paths)]
@@ -124,6 +130,7 @@ class Command:
                           ,tabs=tabs
                           ,fold=fold), focus_cid='fvrs')
             if aid is None or aid=='-': return None
+            scam    = app.app_proc(app.PROC_GET_KEYSTATE, '')
             if aid=='help':
                 dlg_wrapper(_('Help for "Favorites"'), 410, 310,
                      [dict(cid='htxt',tp='me'    ,t=5  ,h=300-28,l=5          ,w=400  ,props='1,0,1'  ) #  ro,mono,border
@@ -143,25 +150,25 @@ class Command:
             fold    = vals['fold']
             last    = vals['fvrs']
             tabs    = vals['tabs']
-            if aid=='open' and paths and last>=0 and os.path.isfile(paths[last]):
+            def save_and_open(path):
                 fvdata['fv_tab']    = tabs
                 fvdata['fv_files']  = files
                 fvdata['fv_projs']  = projs
                 fvdata['fv_fold' ]  = fold 
                 fvdata['fv_last' ]  = last 
                 save_fav_data(fvdata)
-                app.file_open(paths[last])
-                break#while
+                if os.path.isdir( path):
+                    path= app.dlg_file(True, '', path, '')
+                    if not path:    return False
+                app.file_open(path)
+                return True
+               #def save_and_open
+            if aid=='open' and paths and last>=0:
+                if save_and_open(paths[last]):
+                    break#while
             if aid[0:3]=='act' and paths:
                 nf  = int(aid[3])
-                if nf<len(paths) and os.path.isfile(paths[nf]):
-                    fvdata['fv_tab']    = tabs
-                    fvdata['fv_files']  = files
-                    fvdata['fv_projs']  = projs
-                    fvdata['fv_fold' ]  = fold 
-                    fvdata['fv_last' ]  = nf 
-                    save_fav_data(fvdata)
-                    app.file_open(paths[nf])
+                if nf<len(paths) and save_and_open(paths[nf]):
                     break#while
                     
             if aid=='tabs':
@@ -176,8 +183,13 @@ class Command:
                 if fn and not any([os.path.samefile(fn, f) for f in paths]):
                     paths  += [fn]
                     store_b = True
+#           elif aid=='brow' and scam=='s': 
+#               # Ask dir
+#               dr      = dlg_dir('')
+#               if dr
             elif aid=='brow':
-                fn      = app.dlg_file(True, '', '', '')
+                # Ask file
+                fn      = app.dlg_dir('') if scam=='s' else app.dlg_file(True, '', '', '')
                 if fn and os.path.basename(fn).upper()=='SynFav.ini'.upper():
                     store_b = import_SynFav(fn, paths)
                 elif fn and not any([os.path.samefile(fn, f) for f in paths]):
