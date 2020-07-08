@@ -10,7 +10,7 @@ import  re, os, json, collections
 import  cudatext            as app
 from    cudatext        import ed
 from    cudax_lib       import log
-from    .cd_plug_lib    import *
+#from    .cd_plug_lib    import *
 from    .cd_kv_base     import *        # as part of this plugin
 from    .cd_kv_dlg      import *        # as part of this plugin
 
