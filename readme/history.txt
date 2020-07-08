@@ -1,3 +1,9 @@
+1.2.01 (2020-07-08)
+add: Rebuild dialog to use it with resizing
+add: Shift+Open to open file and stay in dialog
+add: Ctrl+1..9 to open item at position 1..9
+add: Menu commands "Open favorite #1..9" to open item at position 1..9
+
 1.1.01 (2019-01-24)
 add: Shift+click on "Add" allows to add folders to Fav list
 add: folders in the list are marked by [ ] brackets

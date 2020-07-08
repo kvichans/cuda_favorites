@@ -9,17 +9,63 @@ homepage=https://github.com/kvichans/cuda_favorites
 section=commands
 caption=Fa&vorites\Favorites...
 method=dlg
-;menu=0
 
 [item20]
 section=commands
 caption=Fa&vorites\&Add current file
 method=add_cur_file
-;menu=0
 
 [item21]
 section=commands
 caption=Fa&vorites\Add current &project
 method=add_cur_proj
-;menu=0
 
+[item30]
+section=commands
+caption=Fa&vorites\-
+method=add_cur_proj
+
+[item31]
+section=commands
+caption=Fa&vorites\Open favorite #&1
+method=fav_open_1
+
+[item32]
+section=commands
+caption=Fa&vorites\Open favorite #&2
+method=fav_open_2
+
+[item33]
+section=commands
+caption=Fa&vorites\Open favorite #&3
+method=fav_open_3
+
+[item34]
+section=commands
+caption=Fa&vorites\Open favorite #&4
+method=fav_open_4
+
+[item35]
+section=commands
+caption=Fa&vorites\Open favorite #&5
+method=fav_open_5
+
+[item36]
+section=commands
+caption=Fa&vorites\Open favorite #&6
+method=fav_open_6
+
+[item37]
+section=commands
+caption=Fa&vorites\Open favorite #&7
+method=fav_open_7
+
+[item38]
+section=commands
+caption=Fa&vorites\Open favorite #&8
+method=fav_open_8
+
+[item39]
+section=commands
+caption=Fa&vorites\Open favorite #&9
+method=fav_open_9
