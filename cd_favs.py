@@ -1,8 +1,8 @@
-﻿''' Plugin for CudaText editor
+''' Plugin for CudaText editor
 Authors:
     Andrey Kvichansky    (kvichans on github.com)
 Version:
-    '1.2.01 2020-07-08'
+    '1.2.02 2020-07-09'
 ToDo: (see end of file)
 '''
 
@@ -83,7 +83,7 @@ class Command:
         if fn:
             self._add_filename(fn, True)
         else:
-            app.msg_status(_('Project Manager plugin has not opened project'))
+            app.msg_status(_('Project Manager has no opened project'))
 
     def _add_filename(self, fn, is_project=False):
         if not fn:  return
@@ -259,15 +259,11 @@ class Command:
                              ,val=_('• Quick opening.'
                                     '\rUse Alt+1, Alt+2, ..., Alt+9'
                                     '\ror Ctrl+1, Ctrl+2, ..., Ctrl+9'
-                                    '\rto direct open file'
-                                    '\r"1: *"'
-                                    '\r"2: *"'
-                                    '\r...'
-                                    '\r"9: *"'
+                                    '\rto quickly open item by its index (1, 2, ... 9).'
                                     '\r '
-                                    '\r• Import. '
-                                    '\rSelect "SynFav.ini" for "Add..." to import Favorites from SynWrite.'
-                                    '\rSee "SynFav.ini" in folder "SynWrite/Settings".'
+                                    '\r• Import favorites from SynWrite. '
+                                    '\rTo import favorites list from SynWrite, browse for file "SynFav.ini".'
+                                    '\rThis file is located in the "Settings" subfolder of SynWrite.'
                                     )
                      ))
         ).show()
