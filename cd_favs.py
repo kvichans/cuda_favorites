@@ -125,9 +125,9 @@ class Command:
         itfs    = get_its(files, fold)
         itps    = get_its(projs, fold)
 
-        enopen  = itab==0 and itfs and flast>=0 or \
+        en_op   = itab==0 and itfs and flast>=0 or \
                   itab==1 and itps and plast>=0
-        enaddc  = itab==0 and bool(ed.get_filename('*'))
+        en_ac   = itab==0 and bool(ed.get_filename('*'))
 
         def do_act(ag, cid, dt=''):
             scam    = ag.scam()
@@ -142,6 +142,7 @@ class Command:
             if cid=='ts':
                 return d(ctrls=d(fs=d(vis=0==its)
                                 ,ps=d(vis=1==its)
+                                ,op=d(en =(lst and pos>=0))
                                 ,ac=d(en =(0==its and bool(ed.get_filename('*')))) ))
             if cid=='fo':
                 return d(ctrls=d(fs=d(items=get_its(files, fo)  ,val=ag.val('fs'))
@@ -212,9 +213,9 @@ class Command:
           ts=d(tp='tabs',y=5   ,x=5 ,r=-5-110-5,h=BH    ,items=itts             ,a='b.r>'   ,on=do_act
         ),fs=d(tp='libx',y=5+BH,x=5 ,r=-5-110-5,b=-10-BH,items=itfs             ,a='b.r>'   ,vis=itab==0
         ),ps=d(tp='libx',y=5+BH,x=5 ,r=-5-110-5,b=-10-BH,items=itps             ,a='b.r>'   ,vis=itab==1
-        ),op=d(tp='bttn',y=5+BH     ,r=-5       ,w=110  ,cap=_('&Open')         ,a=  '>>'   ,on=do_act    ,en=enopen    # &o    default
+        ),op=d(tp='bttn',y=5+BH     ,r=-5       ,w=110  ,cap=_('&Open')         ,a=  '>>'   ,on=do_act    ,en=en_op     # &o    default
                                                         ,hint=open_h,def_bt=True                                                        
-        ),ac=d(tp='bttn',y=5+ 70    ,r=-5       ,w=110  ,cap=_('&Add opened')   ,a=  '>>'   ,on=do_act    ,en=enaddc    # &a
+        ),ac=d(tp='bttn',y=5+ 70    ,r=-5       ,w=110  ,cap=_('&Add opened')   ,a=  '>>'   ,on=do_act    ,en=en_ac     # &a
         ),br=d(tp='bttn',y=5+100    ,r=-5       ,w=110  ,cap=_('Add&...')       ,a=  '>>'   ,on=do_act                  # &.
                                                         ,hint=brow_h                                                        
         ),de=d(tp='bttn',y=5+145    ,r=-5       ,w=110  ,cap=_('&Delete')       ,a=  '>>'   ,on=do_act                  # &d
