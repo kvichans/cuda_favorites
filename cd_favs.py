@@ -227,7 +227,7 @@ class Command:
         ,   fid     ='fs'   if itab==0 and itfs                 else
                      'ps'   if itab==1 and itps                 else
                      'ac'   if itab==0 and ed.get_filename('*') else
-                     'brow'
+                     'br'
         ,   vals    =d(ts=itab
                       ,fo=fold
                       ,fs=flast
