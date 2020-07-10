@@ -2,7 +2,7 @@
 Authors:
     Andrey Kvichansky    (kvichans on github.com)
 Version:
-    '1.2.03 2020-07-09'
+    '1.2.04 2020-07-10'
 ToDo: (see end of file)
 '''
 
@@ -173,7 +173,11 @@ class Command:
                 del lst[pos]
                 pos     = min(max(0, pos), len(lst)-1)
             elif cid=='br':
-                fn      = app.dlg_dir('') if scam=='s' else app.dlg_file(True, '', '', '')
+                fn      = app.dlg_dir('') \
+                            if scam=='s' else \
+                          app.dlg_file(True, '', ''
+                                    , 'CudaText projects|*.cuda-proj' if 1==its else ''
+                                    , 'Add to Fav')
                 if fn is None:                              return []
                 if fn and os.path.basename(fn).upper()=='SynFav.ini'.upper():
                     import_SynFav(fn, files)
@@ -204,6 +208,7 @@ class Command:
                  '\rShift+Click to choose folder')
         itts    = [_('Files'), _('Projects')]
         BH      = app.app_proc(app.PROC_GET_GUI_HEIGHT, 'button')
+        on_dbl  = lambda ag, aid, data='': do_act(ag, 'op')
         ag      = DlgAg(
             form    =d(  cap=_('Favorites 1.2')
                         ,w=500, h=320
@@ -211,8 +216,8 @@ class Command:
                         ,frame='resize')
         ,   ctrls   =d(
           ts=d(tp='tabs',y=5   ,x=5 ,r=-5-110-5,h=BH    ,items=itts             ,a='b.r>'   ,on=do_act
-        ),fs=d(tp='libx',y=5+BH,x=5 ,r=-5-110-5,b=-10-BH,items=itfs             ,a='b.r>'   ,vis=itab==0
-        ),ps=d(tp='libx',y=5+BH,x=5 ,r=-5-110-5,b=-10-BH,items=itps             ,a='b.r>'   ,vis=itab==1
+        ),fs=d(tp='libx',y=5+BH,x=5 ,r=-5-110-5,b=-10-BH,items=itfs             ,a='b.r>'   ,vis=itab==0    ,on_click_dbl=on_dbl
+        ),ps=d(tp='libx',y=5+BH,x=5 ,r=-5-110-5,b=-10-BH,items=itps             ,a='b.r>'   ,vis=itab==1    ,on_click_dbl=on_dbl
         ),op=d(tp='bttn',y=5+BH     ,r=-5       ,w=110  ,cap=_('&Open')         ,a=  '>>'   ,on=do_act    ,en=en_op     # &o    default
                                                         ,hint=open_h,def_bt=True                                                        
         ),ac=d(tp='bttn',y=5+ 70    ,r=-5       ,w=110  ,cap=_('&Add opened')   ,a=  '>>'   ,on=do_act    ,en=en_ac     # &a
