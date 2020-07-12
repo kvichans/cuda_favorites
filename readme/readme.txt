@@ -1,20 +1,17 @@
-Plugin for CudaText.
+Plugin for CudaText. Gives dialog to call favorite items.
 
-- Info
-Folders in the list are marked by [ ] brackets
-Non existing items in the list are marked by ?
-Button "Open" on a folder - suggests to open file in this folder
-Files and folders can be a shortcut
+- Files: click button "Add" in plugin dialog, to browse for a file.
+- Folders: click button "Add" with Shift key, to choose a folder. Folders are shows with [] brackets in the dialog. Calling a folder item - suggests to open a file from that folder.
+- Projects: use ui-tab "Projects" and press button "Add" to choose a project.
 
-- Quick opening
-Use Alt+1, Alt+2, ..., Alt+9, Alt+0 to direct open file
-"1: *", "2: *",..., "9: *", "0: *"
+Non-existing items are marked by ? char in the list.
 
-- Import from SynWrite
-Select "SynFav.ini" for "Add..." to import Favorites from SynWrite
-See "SynFav.ini" in folder "SynWrite/Settings"
+Dialog gives hotkeys to quickly call item by its index 1...9: 
+- Alt+1, Alt+2, ..., Alt+9
+- Ctrl+1, Ctrl+2, ..., Ctrl+9
 
-- Tip
-Shift+click on "Add" allows to add folders to Fav list
+Plugin can import favorites from SynWrite. To do it, browse for file "SynFav.ini", which is located in the Settings subfolder of SynWrite.
 
-Author: Andrey Kvichanskiy (kvichans, at forum/github)
+
+Author: Andrey Kvichanskiy (kvichans, at forum/GitHub)
+License: MIT
