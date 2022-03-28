@@ -1,3 +1,6 @@
+1.2.05 (2022-03-29)
+add: submenu "Open favorites" in File-menu (patch by @ildarkhasanshin)
+
 1.2.04 (2020-07-10)
 add: Added filter to add project file
 add: Added double-click to open item

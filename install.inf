@@ -69,3 +69,7 @@ method=fav_open_8
 section=commands
 caption=Fa&vorites\Open favorite #&9
 method=fav_open_9
+
+[item40]
+section=events
+events=on_start
