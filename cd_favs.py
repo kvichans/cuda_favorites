@@ -94,6 +94,7 @@ class Command:
         fvdata[s_key] = files
         save_fav_data(fvdata)
         app.msg_status(_('Added to Favorites: ')+fn)
+        self.on_start(self) # update
        #def _add_filename
 
     def dlg(self):
@@ -251,6 +252,7 @@ class Command:
              ,fv_files  =files
              ,fv_projs  =projs
         )))
+        self.on_start(self) # update
        #def dlg
 
     def dlg_help(self):
@@ -269,21 +271,32 @@ class Command:
         file_open(str(path_))
 
     def on_start(self, ed_self):
+        recents_index = [ind for ind,it in enumerate(menu_proc('top-file', MENU_ENUM)) if '_recents' in it['hint']][0]
+        if recents_index is None:
+            return
+
+        ind_ = favmenu_id = 0
+        for ind, it in enumerate(menu_proc('top-file', MENU_ENUM)):
+            if 'favmenu' in it['tag']:
+                ind_ = ind
+                favmenu_id = it['id']
+        if ind_ == 0:
+            favmenu_id = menu_proc('top-file', MENU_ADD, index=recents_index+1, tag='favmenu', caption=_('Open favorites'))
+
         fvdata = get_fav_data()
         files = fvdata.get('fv_files', [])
         projs = fvdata.get('fv_projs', [])
         if len(files) > 0 or len(projs) > 0:
-            recents_index = [ind for ind,it in enumerate(menu_proc('top-file', MENU_ENUM)) if '_recents' in it['hint']][0]
-            menu_id = menu_proc('top-file', MENU_ADD, index=recents_index+1, caption=_('Open favorites'))
+            menu_proc(favmenu_id, MENU_CLEAR)
 
             if len(files) > 0:
                 for file_ in files:
-                    n = menu_proc(menu_id, MENU_ADD, command='module=cuda_favorites;cmd=open_file_;info='+file_+';', caption=file_)
+                    menu_proc(favmenu_id, MENU_ADD, command='module=cuda_favorites;cmd=open_file_;info='+file_+';', caption=file_)
 
             if len(projs) > 0:
-                n = menu_proc(menu_id, MENU_ADD, caption='-')
+                menu_proc(favmenu_id, MENU_ADD, caption='-')
                 for proj_ in projs:
-                    n = menu_proc(menu_id, MENU_ADD, command='module=cuda_favorites;cmd=open_file_;info='+proj_+';', caption=proj_)
+                    menu_proc(favmenu_id, MENU_ADD, command='module=cuda_favorites;cmd=open_file_;info='+proj_+';', caption=proj_)
 
    #class Command
 
