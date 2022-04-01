@@ -45,6 +45,13 @@ def import_SynFav(fn_ini, files):
         chnd    = True
     return chnd
 
+_homedir = os.path.expanduser('~')
+
+def collapse_filename(fn):
+    if (fn+'/').startswith(_homedir+'/'):
+        fn = fn.replace(_homedir, '~', 1)
+    return fn
+
 class Command:
     def fav_open_1(self):   self.fav_open(1-1)
     def fav_open_2(self):   self.fav_open(2-1)
@@ -291,12 +298,12 @@ class Command:
 
             if len(files) > 0:
                 for file_ in files:
-                    menu_proc(favmenu_id, MENU_ADD, command='module=cuda_favorites;cmd=open_file_;info='+file_+';', caption=file_)
+                    menu_proc(favmenu_id, MENU_ADD, command='module=cuda_favorites;cmd=open_file_;info='+file_+';', caption=collapse_filename(file_))
 
             if len(projs) > 0:
                 menu_proc(favmenu_id, MENU_ADD, caption='-')
                 for proj_ in projs:
-                    menu_proc(favmenu_id, MENU_ADD, command='module=cuda_favorites;cmd=open_file_;info='+proj_+';', caption=proj_)
+                    menu_proc(favmenu_id, MENU_ADD, command='module=cuda_favorites;cmd=open_file_;info='+proj_+';', caption=collapse_filename(proj_))
 
    #class Command
 
