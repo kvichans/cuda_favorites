@@ -305,6 +305,9 @@ class Command:
                 for proj_ in projs:
                     menu_proc(favmenu_id, MENU_ADD, command='module=cuda_favorites;cmd=open_file_;info='+proj_+';', caption=collapse_filename(proj_))
 
+            menu_proc(favmenu_id, MENU_ADD, caption='-')
+            menu_proc(favmenu_id, MENU_ADD, command='module=cuda_favorites;cmd=dlg;', caption=_('Add/del...'))
+
    #class Command
 
 '''
