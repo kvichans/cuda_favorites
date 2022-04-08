@@ -1,8 +1,8 @@
-﻿''' Plugin for CudaText editor
+''' Plugin for CudaText editor
 Authors:
     Andrey Kvichansky    (kvichans on github.com)
 Version:
-    '1.2.04 2020-07-10'
+    '1.2.05 2022-04-08'
 ToDo: (see end of file)
 '''
 
@@ -164,7 +164,7 @@ class Command:
             if False:pass
             elif cid=='ac':
                 fn      = ed.get_filename('*')
-                if fn and not any([os.path.samefile(fn, f) for f in lst]):
+                if fn and not any([os.path.samefile(fn, f) for f in lst if os.path.isfile(f)]):
                     lst+= [fn]
                     pos = len(lst)-1
                 else:                                       return []
@@ -181,7 +181,7 @@ class Command:
                 if fn is None:                              return []
                 if fn and os.path.basename(fn).upper()=='SynFav.ini'.upper():
                     import_SynFav(fn, files)
-                elif fn and not any([os.path.samefile(fn, f) for f in lst]):
+                elif fn and not any([os.path.samefile(fn, f) for f in lst if os.path.isfile(f)]):
                     lst+= [fn]
                     pos = len(lst)-1
                 else:                                       return []
