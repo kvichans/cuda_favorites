@@ -39,7 +39,7 @@ def import_SynFav(fn_ini, files):
     syn_lns = open(fn_ini, encoding='utf-16').read().splitlines()
     for syn_ln in syn_lns:
         if not os.path.isfile(syn_ln) \
-        or any([os.path.samefile(syn_ln, f) for f in files]): continue
+        or any([os.path.samefile(syn_ln, f) for f in files if os.path.isfile(f)]): continue
         files  += [syn_ln]
         chnd    = True
     return chnd
@@ -87,7 +87,7 @@ class Command:
         s_key = 'fv_projs' if is_project else 'fv_files'
         fvdata  = get_fav_data()
         files   = fvdata.get(s_key, [])
-        if any([os.path.samefile(fn, f) for f in files]):
+        if any([os.path.samefile(fn, f) for f in files if os.path.isfile(f)]):
             return app.msg_status(_('Already in Favorites: ')+fn)
         files  += [fn]
         fvdata[s_key] = files
