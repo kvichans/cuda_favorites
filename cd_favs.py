@@ -253,16 +253,16 @@ class Command:
        #def dlg
 
     def dlg_help(self):
-        app.msg_box(_('• Quick opening.'
+        app.msg_box(_(
+                    '• Folders can be added by Shift + clicking "Add...".'
+                    '\r '
+                    '\r• Quick opening.'
                     '\rUse Alt+1, Alt+2, ..., Alt+9'
                     '\ror Ctrl+1, Ctrl+2, ..., Ctrl+9'
                     '\rto quickly open item by its index (1, 2, ... 9).'
                     '\r '
-                    '\r• Folders can be added by Shift + clicking "Add...".'
-                    '\r '
-                    '\r• Importing favorites from SynWrite. '
-                    '\rTo import favorites list from SynWrite, browse for file "SynFav.ini".'
-                    '\rThis file is located in the "Settings" subfolder of SynWrite.'
+                    '\r• To import favorites from SynWrite, browse for file "SynFav.ini". '
+                    'This file is located in the "Settings" subfolder of SynWrite.'
                     ), app.MB_OK+app.MB_ICONINFO)
        #def dlg_help
    #class Command
