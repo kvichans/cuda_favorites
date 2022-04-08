@@ -1,8 +1,8 @@
-﻿''' Plugin for CudaText editor
+''' Plugin for CudaText editor
 Authors:
     Andrey Kvichansky    (kvichans on github.com)
 Version:
-    '1.2.04 2020-07-10'
+    '1.2.05 2022-04-08'
 ToDo: (see end of file)
 '''
 
@@ -39,7 +39,7 @@ def import_SynFav(fn_ini, files):
     syn_lns = open(fn_ini, encoding='utf-16').read().splitlines()
     for syn_ln in syn_lns:
         if not os.path.isfile(syn_ln) \
-        or any([os.path.samefile(syn_ln, f) for f in files]): continue
+        or any([os.path.samefile(syn_ln, f) for f in files if os.path.isfile(f)]): continue
         files  += [syn_ln]
         chnd    = True
     return chnd
@@ -87,7 +87,7 @@ class Command:
         s_key = 'fv_projs' if is_project else 'fv_files'
         fvdata  = get_fav_data()
         files   = fvdata.get(s_key, [])
-        if any([os.path.samefile(fn, f) for f in files]):
+        if any([os.path.samefile(fn, f) for f in files if os.path.isfile(f)]):
             return app.msg_status(_('Already in Favorites: ')+fn)
         files  += [fn]
         fvdata[s_key] = files
@@ -164,7 +164,7 @@ class Command:
             if False:pass
             elif cid=='ac':
                 fn      = ed.get_filename('*')
-                if fn and not any([os.path.samefile(fn, f) for f in lst]):
+                if fn and not any([os.path.samefile(fn, f) for f in lst if os.path.isfile(f)]):
                     lst+= [fn]
                     pos = len(lst)-1
                 else:                                       return []
@@ -181,7 +181,7 @@ class Command:
                 if fn is None:                              return []
                 if fn and os.path.basename(fn).upper()=='SynFav.ini'.upper():
                     import_SynFav(fn, files)
-                elif fn and not any([os.path.samefile(fn, f) for f in lst]):
+                elif fn and not any([os.path.samefile(fn, f) for f in lst if os.path.isfile(f)]):
                     lst+= [fn]
                     pos = len(lst)-1
                 else:                                       return []
@@ -253,15 +253,17 @@ class Command:
        #def dlg
 
     def dlg_help(self):
-        app.msg_box(_('• Quick opening.'
+        app.msg_box(_(
+                    '• Folders can be added by Shift + clicking "Add...".'
+                    '\r '
+                    '\r• Quick opening.'
                     '\rUse Alt+1, Alt+2, ..., Alt+9'
                     '\ror Ctrl+1, Ctrl+2, ..., Ctrl+9'
                     '\rto quickly open item by its index (1, 2, ... 9).'
                     '\r '
-                    '\r• Import favorites from SynWrite. '
-                    '\rTo import favorites list from SynWrite, browse for file "SynFav.ini".'
-                    '\rThis file is located in the "Settings" subfolder of SynWrite.'
-                    ), app.MB_OK)
+                    '\r• To import favorites from SynWrite, browse for file "SynFav.ini". '
+                    'This file is located in the "Settings" subfolder of SynWrite.'
+                    ), app.MB_OK+app.MB_ICONINFO)
        #def dlg_help
    #class Command
 
