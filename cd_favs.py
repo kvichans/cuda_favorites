@@ -1,4 +1,4 @@
-''' Plugin for CudaText editor
+﻿''' Plugin for CudaText editor
 Authors:
     Andrey Kvichansky    (kvichans on github.com)
 Version:
@@ -39,7 +39,7 @@ def import_SynFav(fn_ini, files):
     syn_lns = open(fn_ini, encoding='utf-16').read().splitlines()
     for syn_ln in syn_lns:
         if not os.path.isfile(syn_ln) \
-        or any([os.path.samefile(syn_ln, f) for f in files if os.path.isfile(f)]): continue
+        or any([os.path.samefile(syn_ln, f) for f in files if os.path.exists(f)]): continue
         files  += [syn_ln]
         chnd    = True
     return chnd
@@ -87,7 +87,7 @@ class Command:
         s_key = 'fv_projs' if is_project else 'fv_files'
         fvdata  = get_fav_data()
         files   = fvdata.get(s_key, [])
-        if any([os.path.samefile(fn, f) for f in files if os.path.isfile(f)]):
+        if any([os.path.samefile(fn, f) for f in files if os.path.exists(f)]):
             return app.msg_status(_('Already in Favorites: ')+fn)
         files  += [fn]
         fvdata[s_key] = files
@@ -164,7 +164,7 @@ class Command:
             if False:pass
             elif cid=='ac':
                 fn      = ed.get_filename('*')
-                if fn and not any([os.path.samefile(fn, f) for f in lst if os.path.isfile(f)]):
+                if fn and not any([os.path.samefile(fn, f) for f in lst if os.path.exists(f)]):
                     lst+= [fn]
                     pos = len(lst)-1
                 else:                                       return []
@@ -181,7 +181,7 @@ class Command:
                 if fn is None:                              return []
                 if fn and os.path.basename(fn).upper()=='SynFav.ini'.upper():
                     import_SynFav(fn, files)
-                elif fn and not any([os.path.samefile(fn, f) for f in lst if os.path.isfile(f)]):
+                elif fn and not any([os.path.samefile(fn, f) for f in lst if os.path.exists(f)]):
                     lst+= [fn]
                     pos = len(lst)-1
                 else:                                       return []
