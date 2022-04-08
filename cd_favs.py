@@ -274,12 +274,16 @@ class Command:
                     ), app.MB_OK)
        #def dlg_help
 
+    def add_to_file_menu(self):
+        if ini_read('plugins.ini', 'events', 'cuda_favorites', '') == '':
+            ini_write('plugins.ini', 'events', 'cuda_favorites', 'on_start')
+
     def open_file_(self, path_):
         file_open(str(path_))
 
     def on_start(self, ed_self):
         recents_index = [ind for ind,it in enumerate(menu_proc('top-file', MENU_ENUM)) if '_recents' in it['hint']][0]
-        if recents_index is None:
+        if not recents_index:
             return
 
         ind_ = favmenu_id = 0
