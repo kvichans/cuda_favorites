@@ -258,10 +258,12 @@ class Command:
                     '\ror Ctrl+1, Ctrl+2, ..., Ctrl+9'
                     '\rto quickly open item by its index (1, 2, ... 9).'
                     '\r '
-                    '\r• Import favorites from SynWrite. '
+                    '\r• Folders can be added by Shift + clicking "Add...".'
+                    '\r '
+                    '\r• Importing favorites from SynWrite. '
                     '\rTo import favorites list from SynWrite, browse for file "SynFav.ini".'
                     '\rThis file is located in the "Settings" subfolder of SynWrite.'
-                    ), app.MB_OK)
+                    ), app.MB_OK+app.MB_ICONINFO)
        #def dlg_help
    #class Command
 
