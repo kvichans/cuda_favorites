@@ -2,7 +2,7 @@
 Authors:
     Andrey Kvichansky    (kvichans on github.com)
 Version:
-    '1.2.05 2022-03-29'
+    '1.2.04 2020-07-10'
 ToDo: (see end of file)
 '''
 
@@ -12,7 +12,6 @@ from    cudatext        import ed
 from    cudax_lib       import log
 from    .cd_kv_base     import *        # as part of this plugin
 from    .cd_kv_dlg      import *        # as part of this plugin
-from cudatext import *
 
 OrdDict = collections.OrderedDict
 d       = dcta      # To use keys as attrs: o=dcta(a=b); x=o.a; o.a=x
@@ -45,13 +44,6 @@ def import_SynFav(fn_ini, files):
         chnd    = True
     return chnd
 
-_homedir = os.path.expanduser('~')
-
-def collapse_filename(fn):
-    if (fn+'/').startswith(_homedir+'/'):
-        fn = fn.replace(_homedir, '~', 1)
-    return fn
-
 class Command:
     def fav_open_1(self):   self.fav_open(1-1)
     def fav_open_2(self):   self.fav_open(2-1)
@@ -72,17 +64,17 @@ class Command:
             if not path:                            return
         if not os.path.isfile(path):                return app.msg_status(f(_('Not exist: {}'), path))
         app.file_open(path)
-
+    
     def add_cur_file(self):
         self._add_filename(ed.get_filename())
-
+        
     def add_cur_proj(self):
         try:
             import cuda_project_man
         except ImportError:
             app.msg_status(_('Project Manager plugin not installed'))
             return
-
+        
         pjm_info= cuda_project_man.global_project_info
         fn      = pjm_info.get('filename', '')
         if fn:
@@ -101,9 +93,8 @@ class Command:
         fvdata[s_key] = files
         save_fav_data(fvdata)
         app.msg_status(_('Added to Favorites: ')+fn)
-        self.on_start(self) # update
        #def _add_filename
-
+    
     def dlg(self):
         pass;                  #LOG and log('=',())
         M,m     = type(self),self
@@ -123,13 +114,13 @@ class Command:
             return ' '
         get_its = lambda lst, fo: [f('{}: {}{}'
                                 , n2c(1+nf)
-                                , os.path.basename(fn)
-                                    if os.path.isfile(fn) else
-                                  '['+os.path.basename(fn)+']'
-                                    if os.path.isdir(fn) else
-                                  '? '+os.path.basename(fn)
+                                , os.path.basename(fn) 
+                                    if os.path.isfile(fn) else 
+                                  '['+os.path.basename(fn)+']' 
+                                    if os.path.isdir(fn) else 
+                                  '? '+os.path.basename(fn) 
                                 , ' ('+os.path.dirname(fn)+')' if fo else ''
-                                )
+                                ) 
                                 for nf,fn in enumerate(lst)]
         itfs    = get_its(files, fold)
         itps    = get_its(projs, fold)
@@ -204,13 +195,13 @@ class Command:
                     ,fid='fs' if 0==its else 'ps')
 
             return []
-
+            
         def do_keys(ag, key, data=''):
             scam    = ag.scam()
             if scam in ('a', 'c') and ord('1')<=key<=ord('9'): # Alt+1..9 or Ctrl+1..9
                 return do_act(ag, 'o#', key-ord('1'))
             return []
-
+        
         open_h  = _('Open file/project and close dialog.'
                  '\rShift+Click to open without dialog closing')
         brow_h  = _('Choose file to append.'
@@ -228,16 +219,16 @@ class Command:
         ),fs=d(tp='libx',y=5+BH,x=5 ,r=-5-110-5,b=-10-BH,items=itfs             ,a='b.r>'   ,vis=itab==0    ,on_click_dbl=on_dbl
         ),ps=d(tp='libx',y=5+BH,x=5 ,r=-5-110-5,b=-10-BH,items=itps             ,a='b.r>'   ,vis=itab==1    ,on_click_dbl=on_dbl
         ),op=d(tp='bttn',y=5+BH     ,r=-5       ,w=110  ,cap=_('&Open')         ,a=  '>>'   ,on=do_act    ,en=en_op     # &o    default
-                                                        ,hint=open_h,def_bt=True
+                                                        ,hint=open_h,def_bt=True                                                        
         ),ac=d(tp='bttn',y=5+ 70    ,r=-5       ,w=110  ,cap=_('&Add opened')   ,a=  '>>'   ,on=do_act    ,en=en_ac     # &a
         ),br=d(tp='bttn',y=5+100    ,r=-5       ,w=110  ,cap=_('Add&...')       ,a=  '>>'   ,on=do_act                  # &.
-                                                        ,hint=brow_h
+                                                        ,hint=brow_h                                                        
         ),de=d(tp='bttn',y=5+145    ,r=-5       ,w=110  ,cap=_('&Delete')       ,a=  '>>'   ,on=do_act                  # &d
         ),up=d(tp='bttn',y=5+190    ,r=-5       ,w=110  ,cap=_('Move &up')      ,a=  '>>'   ,on=do_act                  # &u
         ),dn=d(tp='bttn',y=5+220    ,r=-5       ,w=110  ,cap=_('Move do&wn')    ,a=  '>>'   ,on=do_act                  # &w
         ),fo=d(tp='chck',tid='cl'   ,x=5        ,w=150  ,cap=_('Show &paths')   ,a='..'     ,on=do_act                  # &p
         ),he=d(tp='bttn',tid='cl'   ,x=-110-35  ,w= 25  ,cap=_('&?')            ,a='..>>'   ,on=do_act                  # &?
-        ),cl=d(tp='bttn',y=-5-BH    ,x=-110-5   ,w=110  ,cap=_('Close')         ,a='..>>'   ,on=CB_HIDE
+        ),cl=d(tp='bttn',y=-5-BH    ,x=-110-5   ,w=110  ,cap=_('Close')         ,a='..>>'   ,on=CB_HIDE        
                     ))
         ,   fid     ='fs'   if itab==0 and itfs                 else
                      'ps'   if itab==1 and itps                 else
@@ -259,7 +250,6 @@ class Command:
              ,fv_files  =files
              ,fv_projs  =projs
         )))
-        self.on_start(self) # update
        #def dlg
 
     def dlg_help(self):
@@ -273,45 +263,6 @@ class Command:
                     '\rThis file is located in the "Settings" subfolder of SynWrite.'
                     ), app.MB_OK)
        #def dlg_help
-
-    def add_to_file_menu(self):
-        if ini_read('plugins.ini', 'events', 'cuda_favorites', '') == '':
-            ini_write('plugins.ini', 'events', 'cuda_favorites', 'on_start')
-
-    def open_file_(self, path_):
-        file_open(str(path_))
-
-    def on_start(self, ed_self):
-        recents_index = [ind for ind,it in enumerate(menu_proc('top-file', MENU_ENUM)) if '_recents' in it['hint']][0]
-        if not recents_index:
-            return
-
-        ind_ = favmenu_id = 0
-        for ind, it in enumerate(menu_proc('top-file', MENU_ENUM)):
-            if 'favmenu' in it['tag']:
-                ind_ = ind
-                favmenu_id = it['id']
-        if ind_ == 0:
-            favmenu_id = menu_proc('top-file', MENU_ADD, index=recents_index+1, tag='favmenu', caption=_('Open favorites'))
-
-        fvdata = get_fav_data()
-        files = fvdata.get('fv_files', [])
-        projs = fvdata.get('fv_projs', [])
-        if len(files) > 0 or len(projs) > 0:
-            menu_proc(favmenu_id, MENU_CLEAR)
-
-            if len(files) > 0:
-                for file_ in files:
-                    menu_proc(favmenu_id, MENU_ADD, command='module=cuda_favorites;cmd=open_file_;info='+file_+';', caption=collapse_filename(file_))
-
-            if len(projs) > 0:
-                menu_proc(favmenu_id, MENU_ADD, caption='-')
-                for proj_ in projs:
-                    menu_proc(favmenu_id, MENU_ADD, command='module=cuda_favorites;cmd=open_file_;info='+proj_+';', caption=collapse_filename(proj_))
-
-            menu_proc(favmenu_id, MENU_ADD, caption='-')
-            menu_proc(favmenu_id, MENU_ADD, command='module=cuda_favorites;cmd=dlg;', caption=_('Add/del...'))
-
    #class Command
 
 '''
