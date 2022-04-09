@@ -69,13 +69,3 @@ method=fav_open_8
 section=commands
 caption=Fa&vorites\Open favorite #&9
 method=fav_open_9
-
-[item40]
-section=commands
-caption=Fa&vorites\-
-method=add_cur_proj
-
-[item41]
-section=commands
-caption=Fa&vorites\Add submenu "Open favorites" in File-menu
-method=add_to_file_menu
