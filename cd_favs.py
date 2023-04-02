@@ -2,7 +2,7 @@
 Authors:
     Andrey Kvichansky    (kvichans on github.com)
 Version:
-    '1.2.05 2022-04-08'
+    '1.2.06 2023-04-02'
 ToDo: (see end of file)
 '''
 
@@ -44,7 +44,37 @@ def import_SynFav(fn_ini, files):
         chnd    = True
     return chnd
 
+
+def find_fav():
+    """ Thanks @pintassilgo """
+    fvdata  = get_fav_data()
+    files   = fvdata.get('fv_files', [])
+    fold    = fvdata.get('fv_fold', True)
+
+    def get_its(lst, fo): return [
+        f(
+            '{}{}'
+            , os.path.basename(fn) 
+                if os.path.isfile(fn) else 
+            '['+os.path.basename(fn)+']' 
+                if os.path.isdir(fn) else 
+            '? '+os.path.basename(fn) 
+            , ' ('+os.path.dirname(fn)+')' 
+                if fo else ''
+        ) for fn in lst
+    ]
+    res = app.dlg_menu(app.DMENU_LIST, get_its(files, fold), caption=_('Find favorite'))
+    if res is None:     return
+    path = files[res]
+    if os.path.isdir(path):
+        path= app.dlg_file(True, '', path, '')
+        if not path:    return
+    app.file_open(path)
+   #def find_fav
+
+
 class Command:
+    def find_fav(self):     find_fav()
     def fav_open_1(self):   self.fav_open(1-1)
     def fav_open_2(self):   self.fav_open(2-1)
     def fav_open_3(self):   self.fav_open(3-1)

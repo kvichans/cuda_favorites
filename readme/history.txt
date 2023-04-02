@@ -1,3 +1,6 @@
+1.2.06 (2023-04-02)
+add: Command "Find favorite" (patch from @pintassilgo)
+
 1.2.04 (2020-07-10)
 add: Added filter to add project file
 add: Added double-click to open item
