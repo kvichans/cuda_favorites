@@ -23,7 +23,7 @@ method=add_cur_proj
 [item30]
 section=commands
 caption=Fa&vorites\-
-method=add_cur_proj
+method=_
 
 [item31]
 section=commands
@@ -69,3 +69,14 @@ method=fav_open_8
 section=commands
 caption=Fa&vorites\Open favorite #&9
 method=fav_open_9
+
+
+[item50]
+section=commands
+caption=Fa&vorites\-
+method=_
+
+[item51]
+section=commands
+caption=Fa&vorites\Find fa&vorite...
+method=find_fav
