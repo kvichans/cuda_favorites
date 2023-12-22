@@ -1,4 +1,4 @@
-1.2.07 (2023-12-22)
+1.2.10 (2023-12-22)
 add: plugin adds items for all favorites to the Command Palette (patch by @JairoMartinezA)
 add: (on CudaText 1.206+) plugin adds menu items for all favorites to the "Plugins / Favorites" menu (patch by @JairoMartinezA)
 change: menu items "Plugins / Favorites / Open favorite N" were removed
