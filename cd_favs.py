@@ -95,13 +95,6 @@ def recreate_cmd_items():
 
 
 def recreate_menu_items():
-    # This option just works with specific requirements
-    # Validate the OS architecture and CudaText version
-    valid_ver = app.app_exe_version() >= '1.205.6.0'
-    is_64bits = sys.maxsize > 2**32
-
-    if is_64bits and not valid_ver: return
-
     m = app.menu_proc('top', app.MENU_ENUM)
 
     r = [x['id'] for x in m if x.get('hint', '') == 'plugins']
