@@ -2,7 +2,7 @@
 Authors:
     Andrey Kvichansky    (kvichans on github.com)
 Version:
-    '1.2.10 2023-12-22'
+    '1.2.11 2024-01-13'
 ToDo: (see end of file)
 '''
 
@@ -28,12 +28,12 @@ pass;                           ##!! waits correction
 fav_json= app.app_path(app.APP_DIR_SETTINGS)+os.sep+'cuda_favorites.json'
 
 def get_fav_data():
-    return json.loads(open(fav_json).read(), object_pairs_hook=OrdDict) \
+    return json.loads(open(fav_json, encoding='utf8').read(), object_pairs_hook=OrdDict) \
             if os.path.exists(fav_json) else \
            OrdDict()
 
 def save_fav_data(fvdata):
-    open(fav_json, 'w').write(json.dumps(fvdata, indent=4))
+    open(fav_json, 'w', encoding='utf8').write(json.dumps(fvdata, indent=4))
     recreate_cmd_items()
     recreate_menu_items()
 
@@ -384,8 +384,3 @@ class Command:
                     ), app.MB_OK+app.MB_ICONINFO)
        #def dlg_help
    #class Command
-
-'''
-ToDo
-[+][at-kv][20jun16] Moved from cuda_ext
-'''
