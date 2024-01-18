@@ -1,6 +1,7 @@
 ﻿''' Plugin for CudaText editor
 Authors:
     Andrey Kvichansky    (kvichans on github.com)
+    Jairo Martinez Antonio (JairoMartinezA on github.com)
 Version:
     '1.2.12 2024-01-18'
 ToDo: (see end of file)
@@ -148,7 +149,7 @@ def recreate_menu_items():
 
 class Command:
 
-    def on_start2(self, ed_self):
+    def on_start(self, ed_self):
         recreate_cmd_items()
 
     def on_init_plugins_menu(self, ed_self):

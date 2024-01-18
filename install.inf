@@ -7,7 +7,7 @@ homepage=https://github.com/kvichans/cuda_favorites
 
 [item1]
 section=events
-events=on_start2,on_init_plugins_menu
+events=on_start,on_init_plugins_menu
 
 [item10]
 section=commands
