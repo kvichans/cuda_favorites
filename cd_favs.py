@@ -2,7 +2,7 @@
 Authors:
     Andrey Kvichansky    (kvichans on github.com)
 Version:
-    '1.2.11 2024-01-13'
+    '1.2.12 2024-01-18'
 ToDo: (see end of file)
 '''
 
@@ -84,10 +84,10 @@ def recreate_cmd_items():
                (_('Folder') if os.path.isdir(f) else _('File')) +
                (' {:0>2d} - ' + ('[' if os.path.isdir(f) else '') +
                '{}' + (']' if os.path.isdir(f) else '') +
-               '\t{}').format(i + 1, os.path.basename(f), f)
+               '\t{}').format(i + 1, os.path.basename(f), f.replace('/', '|'))
                for i, f in enumerate(files)]
     fav_lst += ['Favorites: ' + _('Project') +
-                ' {:0>2d} - {}\t{}'.format(i + 1, os.path.basename(f), f)
+                ' {:0>2d} - {}\t{}'.format(i + 1, os.path.basename(f), f.replace('/', '|'))
                 for i, f in enumerate(projs)]
     cmds    = 'cuda_favorites;open_fav;{}'.format('\n'.join(fav_lst))
     app.app_proc(app.PROC_SET_SUBCOMMANDS, cmds)
@@ -364,6 +364,7 @@ class Command:
 
     def open_fav(self, info=None):
         if not info: return
+        info = info.replace('|', '/')
         if os.path.isdir(info):
             info = app.dlg_file(True, '', info, '')
             if not info: return
