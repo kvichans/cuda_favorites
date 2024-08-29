@@ -4,7 +4,7 @@ Authors:
     Jairo Martinez Antonio (JairoMartinezA on github.com)
     Alexey Torgashin (CudaText)
 Version:
-    '1.2.12 2024-01-18'
+    '1.2.14 2024-08-29'
 ToDo: (see end of file)
 '''
 
@@ -323,7 +323,7 @@ class Command:
         on_dbl  = lambda ag, aid, data='': do_act(ag, 'op')
         ag      = DlgAg(
             form    =d(  cap=_('Favorites 1.2')
-                        ,w=500, h=320
+                        ,w=650, h=500
                         ,on_key_down=do_keys
                         ,frame='resize')
         ,   ctrls   =d(
