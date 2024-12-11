@@ -4,7 +4,7 @@ Authors:
     Jairo Martinez Antonio (JairoMartinezA on github.com)
     Alexey Torgashin (CudaText)
 Version:
-    '1.2.14 2024-08-29'
+    '1.2.15 2024-12-11'
 ToDo: (see end of file)
 '''
 
@@ -50,6 +50,50 @@ def import_SynFav(fn_ini, files):
         chnd    = True
     return chnd
 
+HOMEDIR = os.path.expanduser('~')
+def collapse_filename(fn):
+    if fn.startswith(HOMEDIR):
+        fn = fn.replace(HOMEDIR, '~', 1)
+    return fn
+
+def get_preview(files):
+    previews = {}
+    for item in files:
+        preview = ''
+        line_count = sum(1 for line in open(item, 'r', encoding='utf-8'))
+        max_line_count = 20
+        max_line_len = 140
+        preview_count = min(line_count, max_line_count)
+        with open(item, 'r', encoding='utf-8') as f:
+            preview = f.readline().strip()
+            if len(preview) > max_line_len:
+                preview = preview[0:max_line_len] + '...'
+            else:
+                for i in range(preview_count - 1):
+                    if len(preview) < max_line_len:
+                        readline = f.readline().strip()
+                        if readline:
+                            preview = preview + ' ' + readline
+                    else:
+                        break
+                if preview:
+                    preview = preview[0:max_line_len] + '...'
+        if preview:
+            preview = preview.replace("\n", '')
+        previews[item] = "\t" + preview
+
+    return previews
+
+def get_w_h(return_):
+    w_ = 600
+    h_ = 600
+    r = app.app_proc(app.PROC_COORD_MONITOR, 0)
+    if r:
+        w_ = (r[2]-r[0]) // 2
+        h_ = (r[3]-r[1]) // 3
+
+    return w_ if return_ == 'w' else h_
+
 
 def find_fav():
     """ Thanks @pintassilgo """
@@ -59,17 +103,18 @@ def find_fav():
 
     def get_its(lst, fo): return [
         f(
-            '{}{}'
+            '{}{}{}'
             , os.path.basename(fn)
                 if os.path.isfile(fn) else
             '['+os.path.basename(fn)+']'
                 if os.path.isdir(fn) else
             '? '+os.path.basename(fn)
-            , ' ('+os.path.dirname(fn)+')'
+            , ' ('+collapse_filename(os.path.dirname(fn))+')'
                 if fo else ''
+            , get_preview(files)[fn]
         ) for fn in lst
     ]
-    res = app.dlg_menu(app.DMENU_LIST, get_its(files, fold), caption=_('Find favorite'))
+    res = app.dlg_menu(app.DMENU_LIST_ALT, get_its(files, fold), caption=_('Find favorite'), w=get_w_h('w'), h=get_w_h('h'))
     if res is None:     return
     path = files[res]
     if os.path.isdir(path):
@@ -231,7 +276,7 @@ class Command:
                                   '['+os.path.basename(fn)+']'
                                     if os.path.isdir(fn) else
                                   '? '+os.path.basename(fn)
-                                , ' ('+os.path.dirname(fn)+')' if fo else ''
+                                , ' ('+collapse_filename(os.path.dirname(fn))+')' if fo else ''
                                 )
                                 for nf,fn in enumerate(lst)]
         itfs    = get_its(files, fold)

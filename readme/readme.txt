@@ -6,7 +6,7 @@ Plugin for CudaText. Gives dialog to call favorite items.
 
 Non-existing items are marked by ? char in the list.
 
-Dialog gives hotkeys to quickly call item by its index 1...9: 
+Dialog gives hotkeys to quickly call item by its index 1...9:
 - Alt+1, Alt+2, ..., Alt+9
 - Ctrl+1, Ctrl+2, ..., Ctrl+9
 
@@ -14,4 +14,5 @@ Plugin can import favorites from SynWrite. To do it, browse for file "SynFav.ini
 
 
 Author: Andrey Kvichanskiy (kvichans, at forum/GitHub)
+Patches from: ildar r. khasanshin http://github.com/ildarkhasanshin/
 License: MIT

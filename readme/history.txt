@@ -1,3 +1,6 @@
+1.2.15 (2024-12-11)
+add: file-previews in favorites-list (patch by ildar r. khasanshin)
+
 1.2.14 (2024-08-29)
 fix: on Linux Qt5, dialog increased on each call (regression in Lazarus?)
 
