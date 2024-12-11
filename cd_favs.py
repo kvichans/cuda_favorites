@@ -50,10 +50,10 @@ def import_SynFav(fn_ini, files):
         chnd    = True
     return chnd
 
-HOMEDIR = os.path.expanduser('~')
+_homedir = os.path.expanduser('~')
 def collapse_filename(fn):
-    if fn.startswith(HOMEDIR):
-        fn = fn.replace(HOMEDIR, '~', 1)
+    if (fn+'/').startswith(_homedir+'/'):
+        fn = fn.replace(_homedir, '~', 1)
     return fn
 
 def get_preview(files):
@@ -84,7 +84,7 @@ def get_preview(files):
 
     return previews
 
-def get_w_h(return_):
+def get_w_h():
     w_ = 600
     h_ = 600
     r = app.app_proc(app.PROC_COORD_MONITOR, 0)
@@ -92,7 +92,7 @@ def get_w_h(return_):
         w_ = (r[2]-r[0]) // 2
         h_ = (r[3]-r[1]) // 3
 
-    return w_ if return_ == 'w' else h_
+    return w_, h_
 
 
 def find_fav():
@@ -114,7 +114,8 @@ def find_fav():
             , get_preview(files)[fn]
         ) for fn in lst
     ]
-    res = app.dlg_menu(app.DMENU_LIST_ALT, get_its(files, fold), caption=_('Find favorite'), w=get_w_h('w'), h=get_w_h('h'))
+    w, h = get_w_h()
+    res = app.dlg_menu(app.DMENU_LIST_ALT, get_its(files, fold), caption=_('Find favorite'), w=w, h=h)
     if res is None:     return
     path = files[res]
     if os.path.isdir(path):
