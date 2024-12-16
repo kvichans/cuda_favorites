@@ -1,5 +1,5 @@
-1.2.14 (2024-08-29)
-fix: on Linux Qt5, dialog increased on each call (regression in Lazarus?)
+1.2.15 (2024-12-16)
+fix: enable to save last dialog sizes to config (after regression in CudaText was fixed)
 
 1.2.12 (2024-01-18)
 fix: if user sets hotkey for custom favorites, hotkey don't work after Cud restart (patch by Alexey T.)
