@@ -82,13 +82,13 @@ def recreate_cmd_items():
     fvdata  = get_fav_data()
     files   = fvdata.get('fv_files', [])
     projs   = fvdata.get('fv_projs', [])
-    fav_lst = ['Favorites: ' +
+    fav_lst = [_('Favorites: ') +
                (_('Folder') if os.path.isdir(f) else _('File')) +
                (' {:0>2d} - ' + ('[' if os.path.isdir(f) else '') +
                '{}' + (']' if os.path.isdir(f) else '') +
                '\t{}').format(i + 1, os.path.basename(f), f.replace('/', '|'))
                for i, f in enumerate(files)]
-    fav_lst += ['Favorites: ' + _('Project') +
+    fav_lst += [_('Favorites: ') + _('Project') +
                 ' {:0>2d} - {}\t{}'.format(i + 1, os.path.basename(f), f.replace('/', '|'))
                 for i, f in enumerate(projs)]
     cmds    = 'cuda_favorites;open_fav;{}'.format('\n'.join(fav_lst))
@@ -104,7 +104,7 @@ def recreate_menu_items():
     id_pl = r[0]
 
     m = app.menu_proc(id_pl, app.MENU_ENUM)
-    r = [x['id'] for x in m if x['cap'].replace('&', '') == 'Favorites']
+    r = [x['id'] for x in m if x['cap'].replace('&', '') == _('Favorites')]
     if not r: return
     id_fav = r[0]
 
