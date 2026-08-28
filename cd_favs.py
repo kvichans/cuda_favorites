@@ -4,7 +4,7 @@ Authors:
     Jairo Martinez Antonio (JairoMartinezA on github.com)
     Alexey Torgashin (CudaText)
 Version:
-    '1.2.14 2024-08-29'
+    '1.2.16 2026-08-28'
 ToDo: (see end of file)
 '''
 
@@ -270,7 +270,11 @@ class Command:
                     path= app.dlg_file(True, '', path, '')
                     if not path:                            return []
                 if not os.path.isfile(path):                return (app.msg_status(f(_('Not exist: {}'), path)), [])[1]
-                app.file_open(path)
+                def _opn(x):
+                    app.file_open(path)
+                # open file by timer!
+                # because after Fav dlg closing, app restores focus to the old group (eg first group)
+                app.timer_proc(app.TIMER_START_ONE, _opn, 400)
                 return [] if scam=='s' else None            # Auto-close
             # Modify
             if False:pass

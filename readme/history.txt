@@ -1,3 +1,6 @@
+1.2.16 (2026-08-28)
+fix: if user chooses a file from Fav dialog, and that file is in non-1st group, than group is not focused (by Alexey T.)
+
 1.2.15 (2024-12-16)
 fix: enable to save last dialog sizes to config (after regression in CudaText was fixed)
 
