@@ -1,3 +1,6 @@
+1.2.17 (2026-11-21)
+fix: avoid deprecated API: get_filename
+
 1.2.16 (2026-08-28)
 fix: if user chooses a file from Fav dialog, and that file is in non-1st group, than group is not focused (by Alexey T.)
 

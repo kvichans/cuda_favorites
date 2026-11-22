@@ -4,7 +4,7 @@ Authors:
     Jairo Martinez Antonio (JairoMartinezA on github.com)
     Alexey Torgashin (CudaText)
 Version:
-    '1.2.16 2026-08-28'
+    '1.2.17 2026-11-21'
 ToDo: (see end of file)
 '''
 
@@ -178,7 +178,7 @@ class Command:
         app.file_open(path)
 
     def add_cur_file(self):
-        self._add_filename(ed.get_filename())
+        self._add_filename(ed.get_prop(app.PROP_FN, ''))
 
     def add_cur_proj(self):
         try:
@@ -239,7 +239,7 @@ class Command:
 
         en_op   = itab==0 and itfs and flast>=0 or \
                   itab==1 and itps and plast>=0
-        en_ac   = itab==0 and bool(ed.get_filename('*'))
+        en_ac   = itab==0 and bool(ed.get_prop(app.PROP_FN, '*'))
 
         def do_act(ag, cid, dt=''):
             scam    = ag.scam()
@@ -255,7 +255,7 @@ class Command:
                 return d(ctrls=d(fs=d(vis=0==its)
                                 ,ps=d(vis=1==its)
                                 ,op=d(en =(lst and pos>=0))
-                                ,ac=d(en =(0==its and bool(ed.get_filename('*')))) ))
+                                ,ac=d(en =(0==its and bool(ed.get_prop(app.PROP_FN, '*')))) ))
             if cid=='fo':
                 return d(ctrls=d(fs=d(items=get_its(files, fo)  ,val=ag.val('fs'))
                                 ,ps=d(items=get_its(projs, fo)  ,val=ag.val('ps')) )
@@ -279,7 +279,7 @@ class Command:
             # Modify
             if False:pass
             elif cid=='ac':
-                fn      = ed.get_filename('*')
+                fn      = ed.get_prop(app.PROP_FN, '*')
                 if fn and not any([os.path.samefile(fn, f) for f in lst if os.path.exists(f)]):
                     lst+= [fn]
                     pos = len(lst)-1
@@ -348,7 +348,7 @@ class Command:
                     ))
         ,   fid     ='fs'   if itab==0 and itfs                 else
                      'ps'   if itab==1 and itps                 else
-                     'ac'   if itab==0 and ed.get_filename('*') else
+                     'ac'   if itab==0 and ed.get_prop(app.PROP_FN, '*') else
                      'br'
         ,   vals    =d(ts=itab
                       ,fo=fold
